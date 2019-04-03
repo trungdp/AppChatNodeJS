@@ -1,0 +1,50 @@
+*{
+	box-sizing: border-box;
+	margin: 0; 
+	padding: 0;
+}
+.icon{
+	width: 16px;
+	height: 16px;
+}
+body{
+	background: #fff url(images/background.png) no-repeat;
+	background-position: center center;
+	background-size: cover;
+}
+#content{
+	width: 1100px;
+	height: 550px;
+	margin: 30px auto;
+	padding: 10px 10px;
+	border: #000 solid 3px;
+	border-radius: 15px;
+	box-shadow: 0 7px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.2); 
+}
+#content #boxchat{
+	width: 750px;
+	height: 520px;
+	background-color: rgba(235, 255, 210, 0.5);
+	float: left;
+}
+#boxchat .menu-bar{
+	width: 100%;
+	height: 8%;
+}
+#boxchat .messages{
+	width: 100%;
+	height: 82%;
+	border-top: #505050 solid 1px;
+	border-bottom: #505050 solid 1px;
+}
+#boxchat .input-message{
+	width: 100%;
+	height: 10%;
+}
+#list-friends{
+	width: 280px;
+	height: 520px;
+	float: left;
+	margin-left: 30px;
+	background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.3));
+}

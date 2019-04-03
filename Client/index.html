@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>DLChat</title>
+    <link rel="stylesheet" type="text/css" href="default.css">
+
+
+    <script src="/js/socket.io.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/chat.js"></script>
+</head>
+
+<body>
+    <fieldset>
+    <div id="content">
+        <div id="boxchat">
+            <div class="menu-bar">
+                <h3 class="username"></h3>
+                <img class="icon setting-icon" src="images/SetingIcon.png">
+            </div>
+            <div id="chat-content" class="messages">
+                <!-- <ul class="friends-messages"></ul>
+                <ul class="owner-messages"></ul> -->
+            </div>
+            <div class="input input-message">
+                <input id = "message" type="text" name="input" placeholder="type messages">
+                <button id="sendMessage">Gửi</button>
+            </div>
+        </div>
+        <div id="list-friends">
+        	<div class="input find-friend">
+                <input type="text" placeholder="search">
+                <button id="send-button">Tìm</button>
+            </div>
+        </div>
+    </div>
+    <fieldset>
+</body>
+
+</html>
