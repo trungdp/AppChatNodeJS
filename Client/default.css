@@ -37,6 +37,35 @@ body{
 	border-top: #505050 solid 1px;
 	border-bottom: #505050 solid 1px;
 }
+.friends-message{
+	float: left;
+	text-align: left;
+}
+.messages ul li p{
+	padding: 5px 10px;
+	width: auto;
+	border-radius: 5px;
+}
+.friends-message p{
+	background: lightgrey;
+	color: #000;
+}
+.owner-message{
+	float: right;
+	text-align: right;
+}
+.owner-message p{
+	background: green;
+	color: #fff;
+}
+#boxchat .messages ul li{
+	width: 60%;
+	height: auto;
+	list-style-type: none;
+	margin-top: 1px;
+}
+
+
 #boxchat .input-message{
 	width: 100%;
 	height: 10%;
@@ -47,4 +76,10 @@ body{
 	float: left;
 	margin-left: 30px;
 	background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.3));
+}
+#friends-messages{
+	float: left;
+}
+#owner-messages{
+	float: right;
 }

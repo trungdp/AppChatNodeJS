@@ -5,28 +5,25 @@
     <meta charset="UTF-8">
     <title>DLChat</title>
     <link rel="stylesheet" type="text/css" href="default.css">
-
-
     <script src="/js/socket.io.js"></script>
     <script src="/js/jquery.min.js"></script>
     <script src="/js/chat.js"></script>
 </head>
 
 <body>
-    <fieldset>
     <div id="content">
         <div id="boxchat">
             <div class="menu-bar">
-                <h3 class="username"></h3>
+                <h1 class="friend-name" id="friend-name">A</h1>
                 <img class="icon setting-icon" src="images/SetingIcon.png">
+                <input id="user-name" type="text" name="user-name" placeholder="type your name" style="float: right;">
             </div>
-            <div id="chat-content" class="messages">
-                <!-- <ul class="friends-messages"></ul>
-                <ul class="owner-messages"></ul> -->
+            <div class="messages">
+                <ul id="messages"></ul>
             </div>
             <div class="input input-message">
-                <input id = "message" type="text" name="input" placeholder="type messages">
-                <button id="sendMessage">Gửi</button>
+                <input id="message" type="text" name="input" placeholder="type messages">
+                <button id="send-button">Gửi</button>
             </div>
         </div>
         <div id="list-friends">
@@ -36,7 +33,6 @@
             </div>
         </div>
     </div>
-    <fieldset>
 </body>
 
 </html>
