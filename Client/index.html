@@ -11,26 +11,29 @@
 </head>
 
 <body>
+    <div id="login"></div>
     <div id="content">
         <div id="boxchat">
             <div class="menu-bar">
                 <h1 class="friend-name" id="friend-name">A</h1>
+                <input id="ip-user-name" type="text" name="user-name" placeholder="type your name" style="float: left;">
                 <img class="icon setting-icon" src="images/SetingIcon.png">
-                <input id="user-name" type="text" name="user-name" placeholder="type your name" style="float: right;">
+                <div class="setting-menu" id="setting-menu"></div>
             </div>
             <div class="messages">
                 <ul id="messages"></ul>
             </div>
-            <div class="input input-message">
-                <input id="message" type="text" name="input" placeholder="type messages">
-                <button id="send-button">Gửi</button>
+            <div class="bottom-input">
+                <input class="input" id="message-input" type="text" name="input" placeholder="type messages...">
+                <button id="btn-send">Gửi</button>
             </div>
         </div>
-        <div id="list-friends">
+        <div id="right-list">
         	<div class="input find-friend">
-                <input type="text" placeholder="search">
-                <button id="send-button">Tìm</button>
+            &#128269;<input class="input ip-find-friend" type="text" placeholder="search">
             </div>
+            <ul class="list-friends">
+            </ul>
         </div>
     </div>
 </body>
