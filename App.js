@@ -3,6 +3,7 @@ var express = require("express");
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
+var mongodb = require('./Database/MongoDB')
 
 //Chỉ ra đường dẫn chứa css, js, images...
 app.use(express.static(path.join(__dirname, 'Client')));
@@ -20,6 +21,8 @@ io.on('connection', function (socket) {
         io.sockets.emit('send', data);
     });
 });
+
+mongodb.connect();
 
 //Khởi tạo 1 server listen tại 1 port
 server.listen(3000);
