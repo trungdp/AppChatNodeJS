@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>DLChat</title>
     <link rel="stylesheet" type="text/css" href="default.css">
+    <link rel="stylesheet" type="text/css" href="login.css">
     <script src="/js/socket.io.js"></script>
     <script src="/js/jquery.min.js"></script>
     <script src="/js/chat.js"></script>
@@ -28,7 +29,28 @@
                 <button id="btn-send">Gửi</button>
             </div>
         </div>
+        
+        <div id="id01" class="modal">
+            <form class="modal-content animate" style="background-color:#f1f1f1">
+                <div class="imgcontainer">
+                    <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+                    <img src="images/chatIcon.png" alt="Avatar" class="avatar" style="width:100px;height:100px">
+                </div>
+
+                <div class="container">
+                    <label for="uname"><b>Username</b></label>
+                    <input id="username" type="text" placeholder="Enter Username" name="uname" required>
+
+                    <label for="psw"><b>Password</b></label>
+                    <input id="password" type="password" placeholder="Enter Password" name="psw" required>
+
+                    <button id="btn-login" style="font-size : 20px">Login</button>
+                </div>
+            </form>
+        </div>
+
         <div id="right-list">
+            <button id="btn-login" onclick="document.getElementById('id01').style.display='block'" style="width:100%;">Login</button>
         	<div class="input find-friend">
             &#128269;<input class="input ip-find-friend" type="text" placeholder="search">
             </div>
