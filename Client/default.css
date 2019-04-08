@@ -2,10 +2,21 @@
 	box-sizing: border-box;
 	margin: 0; 
 	padding: 0;
+	font-family: "vertical", "arial";
+	font-size: 1em;
+	color: #000;
 }
 .icon{
-	width: 16px;
-	height: 16px;
+	width: 32px;
+	height: 32px;
+}
+.input{
+	border-radius: 2px;
+	border: none;
+	padding: 3px;
+}
+ul li{
+	list-style-type: none;
 }
 body{
 	background: #fff url(images/background.png) no-repeat;
@@ -21,65 +32,114 @@ body{
 	border-radius: 15px;
 	box-shadow: 0 7px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.2); 
 }
+
+/*-------------------------------------------------------*/
+/*content*/
+/*-------------------------------------------------------*/
 #content #boxchat{
 	width: 750px;
 	height: 520px;
 	background-color: rgba(235, 255, 210, 0.5);
 	float: left;
 }
+/*---------------------------------------------*/
 #boxchat .menu-bar{
 	width: 100%;
 	height: 8%;
+	padding: 5px 5px;
 }
+#boxchat .menu-bar .friend-name{
+	float: left;
+	font-size: 1.7em;
+	font-weight: normal;
+}
+#boxchat .menu-bar .setting-icon{
+	float: right;
+}
+/*---------------------------------------------*/
 #boxchat .messages{
+	padding: 5px;
 	width: 100%;
 	height: 82%;
 	border-top: #505050 solid 1px;
 	border-bottom: #505050 solid 1px;
 }
-.friends-message{
-	float: left;
-	text-align: left;
-}
-.messages ul li p{
+#boxchat .messages p{
+	max-width: 60%;
 	padding: 5px 10px;
-	width: auto;
 	border-radius: 5px;
 }
-.friends-message p{
+.friends-message{
+}
+#boxchat .messages .friends-message p{
+	float: left;
 	background: lightgrey;
 	color: #000;
 }
 .owner-message{
-	float: right;
-	text-align: right;
 }
-.owner-message p{
+#boxchat .messages .owner-message p{
+	float: right;
 	background: green;
 	color: #fff;
 }
 #boxchat .messages ul li{
-	width: 60%;
-	height: auto;
-	list-style-type: none;
 	margin-top: 1px;
+	width: 100%;
+	height: auto;
+	display: table;
 }
-
-
-#boxchat .input-message{
+/*---------------------------------------------*/
+#boxchat .bottom-input{
 	width: 100%;
 	height: 10%;
 }
-#list-friends{
+#boxchat .bottom-input #message-input{
+	padding: 5px;
+	width: 90%;
+	height: 100%;
+	background-color: rgba(235, 255, 210, 0.5);
+}
+#boxchat .bottom-input #btn-send{
+	width: 65px;
+	height: 40px;
+	background-color: rgba(235, 255, 210, 0.5);
+	border: green solid 2px;
+	border-radius: 10px;
+
+	color: green;
+	font-weight: bold;
+
+}
+#boxchat .bottom-input #btn-send:hover{
+	background-color: green;
+	color: #fff;
+	transition: 0.25s linear;
+}
+
+/*-------------------------------------------------------*/
+/*right list friend*/
+/*-------------------------------------------------------*/
+#right-list{
 	width: 280px;
 	height: 520px;
 	float: left;
 	margin-left: 30px;
 	background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.3));
+	overflow-y: scroll;
 }
-#friends-messages{
-	float: left;
+#right-list .find-friend{
+	margin: 0 auto;
+	background: #fff;
+	width: 99%;
+	height: 30px;
 }
-#owner-messages{
+#right-list .find-friend .ip-find-friend{
+	width: 90%;
 	float: right;
+	text-align: center;
+}
+#right-list ul li{
+	width: 100%;
+	height: 50px;
 }
