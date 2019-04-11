@@ -29,9 +29,11 @@ $(function () {
 //**************************************************************************
 //Hàm xử lý
 //**************************************************************************
-    var convertMessage = (who,data)=> $("#messages").append("<li  class="+who+"> <p>" 
+    var convertMessage = (who,data)=> {
+        $("#messages").append("<li  class="+who+"> <p>" 
                 + data.username + ": " + data.message + " </p>"
                 +"</li>");
+    }
     var sendMessage = ()=>{
         var username = $('#ip-user-name').val();
         var message = $('#message-input').val();

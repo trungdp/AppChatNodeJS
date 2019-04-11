@@ -4,16 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <title>DLChat</title>
-    <link rel="stylesheet" type="text/css" href="default.css">
-    <link rel="stylesheet" type="text/css" href="login.css">
+    <link rel="stylesheet" type="text/css" href="style/default.css">
+    <link rel="stylesheet" type="text/css" href="style/login.css">
     <script src="/js/socket.io.js"></script>
     <script src="/js/jquery.min.js"></script>
     <script src="/js/chat.js"></script>
+    <script src="/js/login.js"></script>
 </head>
 
 <body>
-    <div id="login"></div>
-    <div id="content">
+    <div id="signin">
+        <div>
+        <button id="btn-switch-login"></button>
+        <img class="logo" src="" title="logo" alt="logo">
+        <div class="signin-title">  
+            <h1>ĐĂNG KÝ</h1>
+            <p>Chat miễn phí với nhiều tính năng hơn</p>
+        </div>
+        <form>
+            <input type="text" name="user-name" id="user-name" placeholder="Tên tài khoản" /><br>
+            <input type="text" name="password" id="password" placeholder="Mật khẩu" /><br>
+            <button class="button" id="btn-continute">Tiếp tục</button>
+            <button class="button" id="btn-skip">Bỏ qua</button>
+        </form>
+        <p id="bottom-note"><a href="#">Đăng nhập</a> nếu bạn đã là thành viên của DLChat</p>
+        </div>
+    </div>
+    <div id='content'>
         <div id="boxchat">
             <div class="menu-bar">
                 <h1 class="friend-name" id="friend-name">A</h1>
@@ -26,38 +43,18 @@
             </div>
             <div class="bottom-input">
                 <input class="input" id="message-input" type="text" name="input" placeholder="type messages...">
-                <button id="btn-send">Gửi</button>
+                <button class="button" id="btn-send">Gửi</button>
             </div>
         </div>
-        
-        <div id="id01" class="modal">
-            <form class="modal-content animate" style="background-color:#f1f1f1">
-                <div class="imgcontainer">
-                    <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
-                    <img src="images/chatIcon.png" alt="Avatar" class="avatar" style="width:100px;height:100px">
-                </div>
-
-                <div class="container">
-                    <label for="uname"><b>Username</b></label>
-                    <input id="username" type="text" placeholder="Enter Username" name="uname" required>
-
-                    <label for="psw"><b>Password</b></label>
-                    <input id="password" type="password" placeholder="Enter Password" name="psw" required>
-
-                    <button id="btn-login" style="font-size : 20px">Login</button>
-                </div>
-            </form>
-        </div>
-
-        <div id="right-list">
-            <button id="btn-login" onclick="document.getElementById('id01').style.display='block'" style="width:100%;">Login</button>
-        	<div class="input find-friend">
-            &#128269;<input class="input ip-find-friend" type="text" placeholder="search">
+        <div id="right-list" style="opacity: 0.3">
+            <div class="input find-friend">
+                &#128269;<input class="input ip-find-friend" type="text" placeholder="search">
             </div>
             <ul class="list-friends">
             </ul>
         </div>
     </div>
+    <button class="button" id="float-button" onclick="document.getElementById('id01').style.display='none'">Login</button>
 </body>
 
 </html>
