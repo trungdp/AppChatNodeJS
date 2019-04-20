@@ -61,6 +61,12 @@ body{
 #boxchat .menu-bar .setting-icon{
 	float: right;
 }
+
+#boxchat .menu-bar .setting-menu{
+	display: block;
+	position: absolute;
+	opacity: 0;
+}
 /*---------------------------------------------*/
 #boxchat .messages{
 	padding: 5px;
@@ -101,9 +107,25 @@ body{
 }
 #boxchat .bottom-input #message-input{
 	padding: 5px;
-	width: 90%;
+	width: 70%;
 	height: 100%;
 	background-color: rgba(235, 255, 210, 0.5);
+	float: left;
+}
+input[type = "file"]{
+	display: none;
+}
+#boxchat .bottom-input #choose-file{
+	float: left;
+	display: inline-block;
+	width: 90px;
+	height: 100%;
+	background-color: rgba(235, 255, 210, 0.5);
+}
+#boxchat .bottom-input #choose-file img{
+	width: 60%;
+	height: 60%;
+	margin-top: 10px;
 }
 #boxchat .bottom-input #btn-send{
 	width: 65px;
@@ -111,6 +133,7 @@ body{
 	background-color: rgba(235, 255, 210, 0.5);
 	border: green solid 2px;
 	color: green;
+	float: left;
 }
 #boxchat .bottom-input #btn-send:hover{
 	background-color: green;
@@ -147,21 +170,25 @@ body{
 /*-------------------------------------------------------*/
 /*fixed button*/
 /*-------------------------------------------------------*/
+.green-button{
+	background-color: green;
+	color: #fff;
+}
+.green-button:hover{
+	color: green;
+	background-color: rgba(235, 255, 210, 1);
+	border: green solid 2px;
+	transition: 0.2s linear;
+}
 #float-button{
 	display: none;
 	width: 250px;
 	height: 50px;
-	background-color: green;
-	color: #fff;
 	box-shadow: #000 3px 3px 7px;
 	position: fixed;
 	bottom: 300px;
-	right: 175px;
+	right: 180px;
 }
 #float-button:hover{
-	color: green;
-	background-color: rgba(235, 255, 210, 0.5);
-	border: green solid 2px;
 	box-shadow: none;
-	transition: 0.2s linear;
 }

@@ -15,19 +15,17 @@
 <body>
     <div id="signin">
         <div>
-        <button id="btn-switch-login"></button>
+        <button class="button green-button" id="btn-switch-login">Đăng nhập</button>
         <img class="logo" src="" title="logo" alt="logo">
-        <div class="signin-title">  
-            <h1>ĐĂNG KÝ</h1>
+        <div class="signin-title" id="signin-title">  
+            <h1 id="h1-title">ĐĂNG KÝ</h1>
             <p>Chat miễn phí với nhiều tính năng hơn</p>
         </div>
-        <form>
             <input type="text" name="user-name" id="user-name" placeholder="Tên tài khoản" /><br>
-            <input type="text" name="password" id="password" placeholder="Mật khẩu" /><br>
-            <button class="button" id="btn-continute">Tiếp tục</button>
-            <button class="button" id="btn-skip">Bỏ qua</button>
-        </form>
-        <p id="bottom-note"><a href="#">Đăng nhập</a> nếu bạn đã là thành viên của DLChat</p>
+            <input type="password" name="password" id="password" placeholder="Mật khẩu"/><br>
+            <button class="button" id="btn-continue">Tiếp tục</button>
+            <button class="button" id="btn-skip">Bỏ qua</button><br>
+        <p id="bottom-note"><a id="note-link" href="#">Đăng nhập</a> nếu bạn đã là thành viên của DLChat</p>
         </div>
     </div>
     <div id='content'>
@@ -36,13 +34,20 @@
                 <h1 class="friend-name" id="friend-name">A</h1>
                 <input id="ip-user-name" type="text" name="user-name" placeholder="type your name" style="float: left;">
                 <img class="icon setting-icon" src="images/SetingIcon.png">
-                <div class="setting-menu" id="setting-menu"></div>
+                <ul class="setting-menu" id="setting-menu">
+                    <li>Đổi biệt hiệu</li>
+                    <li>Đăng xuất</li>
+                </ul>
             </div>
             <div class="messages">
                 <ul id="messages"></ul>
             </div>
             <div class="bottom-input">
                 <input class="input" id="message-input" type="text" name="input" placeholder="type messages...">
+                <label id="choose-file" >
+                    <img src="images/Add-attachment-icon.png" alt="add file" title="add file">
+                    <input type="file" name="">
+                </label>
                 <button class="button" id="btn-send">Gửi</button>
             </div>
         </div>
@@ -54,7 +59,7 @@
             </ul>
         </div>
     </div>
-    <button class="button" id="float-button" onclick="document.getElementById('id01').style.display='none'">Login</button>
+    <button class="button green-button" id="float-button" onclick="document.getElementById('id01').style.display='none'">Login</button>
 </body>
 
 </html>
