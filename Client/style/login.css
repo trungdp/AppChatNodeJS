@@ -9,12 +9,17 @@
 }
 #signin p{
 	color: #000;
+	display: block; 
+	width: 100%;
+}
+#signin a{
+	color: green;
 }
 #signin div{
 	border-radius: 5px;
 	margin: 50px auto;
 	padding: 20px 0;
-	width: 30%;
+	width: 25%;
 	background: rgba(235, 255, 210, 1);
 }
 #signin .logo{
@@ -25,9 +30,12 @@
 	border-radius: 1000px;
 }
 #btn-switch-login{
+	width: 80px;
+	height: 50px;
 	z-index: 1;
 	position: absolute;
-	right: 450px;
+	top: 30px;
+	right: 475px;
 }
 #signin .signin-title{
 	margin: 0;
@@ -44,22 +52,35 @@
 	margin: 3px 60px;
 	padding: 5px;
 }
-#btn-continute , #btn-skip{
+#btn-continue , #btn-skip{
+	float: left;
+	display: block;
 	margin-top: 20px;
+	margin-bottom: 20px;
 	width: 40%;
 	height: 40px;
 	color: green;
 	border: solid green 2px;
 	background: rgba(235, 255, 210, 1);
+	padding: 10px 35px;
 }
-#btn-continute:hover , #btn-skip:hover{
+#btn-continue:hover , #btn-skip:hover{
 	background-color: green;
 	color: #fff;
 	transition: 0.25s linear;
 }
-#btn-continute{
+#btn-continue{
 	margin-left: 30px;
 }
 #btn-skip{
 	margin-left: 10px;
+}
+#bottom-note{
+	margin-top: 20px;
+	padding-left: 30px; 
+}
+.setting-menu{
+	display: block;
+	position: absolute;
+	opacity: 0;
 }
