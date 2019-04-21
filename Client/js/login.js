@@ -1,17 +1,21 @@
-$(function() {
-    var modal = $('#id01');
 
-    modal.on('click', function() {
-        modal.style.display = "none";
+
+$(function() {
+    var socket = io.connect('http://localhost:3000');
+    //Socket nhận data và append vào giao diện
+    socket.on("signin", function (data) {
+        if (data) {
+            $('#signin').hide();
+        } else {
+            $('#signin').show();
+        }
     });
 
-    $('#btn-continute').on('click', function() {
-        var name = $('#username').val();
+    $('#btn-continue').on('click', function() {
+        var name = $('#user-name').val();
         var pass = $('#password').val();
-        if (mongodb.isValidateUser({ name: name, pass: pass })) {
-            alert("true");
-        } else {
-            alert("false");
-        };
+        $('#password').val("");
+        $('#user-name').val("");
+        socket.emit('signin', {name: name, pass:pass});
     });
 });

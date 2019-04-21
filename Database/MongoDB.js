@@ -1,9 +1,7 @@
 var MongoClient = require('mongodb').MongoClient;
-var mongoose = require('mongoose');
 var dbName = 'dlchat'
 var url = "mongodb://127.0.0.1/"+dbName;
 
-// var schemal = 
 
 module.exports = {
 	connect:function () {
@@ -38,6 +36,7 @@ module.exports = {
 				var mappedArray = obj.map(function (item) { return item.el; });
 				table.insertMany(obj, function(err, res) {
 					if (err) throw err;
+					console.log(res);
 					console.log("Inserted " + mappedArray.length + " documents");
 					db.close();
 				})
@@ -51,30 +50,25 @@ module.exports = {
 		})
 	},
 
-	query:function(query,tableName){
-		MongoClient.connect(url, function(err, db) {
+	query:function(query,tableName,callback){
+		return MongoClient.connect(url,{ useNewUrlParser: true }, function(err, db) {
 			if (err) throw err;
-			var table = db.db(dbName).collection(tableName);
-			table.find(query).toArray(function(err, result) {
+			db.db(dbName).collection(tableName).find(query).toArray(function(err, queryResult) {
 				if (err) throw err;
-				console.log(result);
 				db.close();
+				return callback(queryResult)
 			});
-		});	
+		});
 	},
 	
-	isValidateUser:function(query){
-		MongoClient.connect(url, function(err, db) {
+	isValidateUser:function(query,callback){
+		return MongoClient.connect(url,{ useNewUrlParser: true }, function(err, db) {
 			if (err) throw err;
-			var table = db.db(dbName).collection("User");
-			var isValidateUser = false;
-			table.find(query).toArray(function(err, result) {
+			db.db(dbName).collection("User").find(query).toArray(function(err, result) {
 				if (err) throw err;
-				console.log(result);
-				if (result.length != 0) {isValidateUser = true}
 				db.close();
+				return callback(result[0]) ;
 			});
-			return isValidateUser;
 		});	
 	}
 };
