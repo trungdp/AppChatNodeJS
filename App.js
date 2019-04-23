@@ -23,7 +23,7 @@ io.on('connection', function (socket) {
         io.sockets.emit('send', data);
     });
 
-    socket.on('login',function (data){
+    socket.on('signin',function (data){
     	mongodb.isValidateUser(data,function(result){
     		console.log(result);
     		io.sockets.emit('signin', result.name != "");
@@ -31,4 +31,11 @@ io.on('connection', function (socket) {
     	});
     }); 
 });
+
+mongodb.connect();
+mongodb.createTable("User");
+var obj1 = {name: "trung",pass: "1"};
+var obj2 = {name: "vu",pass: "2"};
+var obj3 = {name: "quan",pass: "3"};
+mongodb.insert([obj1,obj2,obj3],"User");
 server.listen(3000);

@@ -9,7 +9,7 @@ module.exports = {
 			if (err) throw err;
 			console.log("Connected to " + dbName);
 			db.close();
-		})
+		});
 	},
 
 	createTable:function(tableName){
@@ -24,7 +24,7 @@ module.exports = {
 					db.close();
 				});
 			}
-		})
+		});
 	},
 
 	insert:function(obj,tableName){
@@ -36,7 +36,6 @@ module.exports = {
 				var mappedArray = obj.map(function (item) { return item.el; });
 				table.insertMany(obj, function(err, res) {
 					if (err) throw err;
-					console.log(res);
 					console.log("Inserted " + mappedArray.length + " documents");
 					db.close();
 				})

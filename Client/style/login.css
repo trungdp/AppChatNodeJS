@@ -1,3 +1,6 @@
+*{
+	box-sizing: border-box;
+}
 #signin{
 	position: fixed;
 	top: 0;
@@ -23,11 +26,10 @@
 	background: rgba(235, 255, 210, 1);
 }
 #signin .logo{
-	width: 40px;
-	height: 40px;
+	width: 50px;
+	height: 50px;
 	margin-left: 150px;
-	border: solid red 1px;
-	border-radius: 1000px;
+	margin-top: 20px;
 }
 #btn-switch-login{
 	width: 80px;
@@ -46,7 +48,7 @@
 	font-size: 5em;
 }
 
-#user-name , #password{
+#user-name , #password, #password-confirm{
 	width: 70%;
 	height: 40px;
 	margin: 3px 60px;
