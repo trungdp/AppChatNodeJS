@@ -9,6 +9,7 @@
 	height: 100%;
 	background-color: rgba(0,0,0, 0.5);
 	color: green;
+	z-index: 1;
 }
 #signin p{
 	color: #000;
@@ -80,9 +81,4 @@
 #bottom-note{
 	margin-top: 20px;
 	padding-left: 30px; 
-}
-.setting-menu{
-	display: block;
-	position: absolute;
-	opacity: 0;
 }

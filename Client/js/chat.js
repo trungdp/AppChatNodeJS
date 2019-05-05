@@ -26,9 +26,30 @@ $(function() {
         }
     });
 
-    $('#float-button').on('click', ()=>{
+    //hien lai form dang nhap neu bo qua
+    $('#float-button').on('click', () => {
         $('#signin').show();
-    })
+    });
+
+    //mac dinh an menu va input doi biet hieu
+    $('#setting-menu').hide();
+    $("#ip-user-name").hide();
+
+    $('#setting-icon').on('click',()=> {
+        $('#setting-menu').toggle(50, 'linear');
+    });
+    //chon menu item thay doi biet hieu
+    $('#menu-change-name').on('click', ()=>{
+        $('#ip-user-name').toggle(50);
+    });
+    //nhan enter len input, doi biet hieu
+    $("#ip-user-name").on('keypress', (e) => {
+        //vì một số browser dùng keyCode, một số dùng keyWhich, nên lấy 1 trong 2
+        var keyCode = (e.keyCode ? e.keyCode : e.keyWhich);
+        if (keyCode == '13') {
+            //doi biet hieu
+        }
+    });
 
     //**************************************************************************
     //Hàm xử lý
@@ -51,5 +72,5 @@ $(function() {
         }
     }
 
-    
+
 });

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>DLChat</title>
+    <link rel="icon" href="images/chat-logo.png" sizes="16x16">
     <link rel="stylesheet" type="text/css" href="style/default.css">
     <link rel="stylesheet" type="text/css" href="style/login.css">
     <script src="/js/socket.io.js"></script>
@@ -15,41 +16,45 @@
 <body>
     <div id="signin">
         <div>
-        <button class="button green-button" id="btn-switch-login">Đăng ký</button>
-        <img class="logo" src="images/chat-logo.png" title="logo" alt="logo">
-        <div class="signin-title" id="signin-title">  
-            <h1 id="h1-title">ĐĂNG NHẬP</h1>
-            <p>Chat miễn phí với nhiều tính năng hơn</p>
-        </div>
+            <button class="button green-button" id="btn-switch-login">Đăng ký</button>
+            <img class="logo" src="images/chat-logo.png" title="logo" alt="logo">
+            <div class="signin-title" id="signin-title">
+                <h1 id="h1-title">ĐĂNG NHẬP</h1>
+                <p>Chat miễn phí với nhiều tính năng hơn</p>
+            </div>
             <input type="text" name="user-name" id="user-name" placeholder="Tên tài khoản" /><br>
-            <input type="password" name="password" id="password" placeholder="Mật khẩu"/><br>
-            <input type="password" name="password-confirm" id="password-confirm" placeholder="Xác nhận mật khẩu"/><br>
+            <input type="password" name="password" id="password" placeholder="Mật khẩu" /><br>
+            <input type="password" name="password-confirm" id="password-confirm" placeholder="Xác nhận mật khẩu" /><br>
             <button class="button" id="btn-continue">Tiếp tục</button>
             <button class="button" id="btn-skip">Bỏ qua</button><br>
-        <p id="bottom-note"><a id="note-link" href="#">Quên mật khẩu?</a></p>
-        <!--script type="text/javascript">$('#password-confirm').hide();</script-->
+            <p id="bottom-note"><a id="note-link" href="#">Quên mật khẩu?</a></p>
         </div>
     </div>
     <div id='content'>
         <div id="boxchat">
             <div class="menu-bar">
-                <h1 class="friend-name" id="friend-name">A</h1>
-                <input id="ip-user-name" type="text" name="user-name" placeholder="type your name" style="float: left;">
-                <img class="icon setting-icon" src="images/SetingIcon.png">
+                <h1 class="friend-name" id="friend-name">Bạn mới</h1>
+                <input class="input" id="ip-user-name" type="text" name="user-name" placeholder="Đổi biệt hiệu" style="float: left;">
+                <img class="icon setting-icon" id="setting-icon" src="images/SetingIcon.png">
                 <ul class="setting-menu" id="setting-menu">
-                    <li>Đổi biệt hiệu</li>
-                    <li>Đăng xuất</li>
+                    <li id="menu-change-name"><a>Đổi biệt hiệu</a></li>
+                    <li id="menu-signout"><a>Đăng xuất</a></li>
                 </ul>
             </div>
             <div class="messages">
                 <ul id="messages"></ul>
             </div>
             <div class="bottom-input">
-                <input class="input" id="message-input" type="text" name="input" placeholder="type messages...">
-                <label id="choose-file" >
-                    <img src="images/Add-attachment-icon.png" alt="add file" title="add file">
+                <input class="input" id="message-input" type="text" name="input" placeholder="Nhập tin nhắn...">
+                <label id="choose-file">
+                    <img class="icon" src="images/Add-attachment-icon.png" alt="add file" title="add file">
                     <input type="file" name="">
                 </label>
+                <label id="choose-image">
+                    <img class="icon" src="images/add-image-icon.png" alt="add image" title="add image">
+                    <input type="file" name="" accept="image/png, image/jpeg">
+                </label>
+                </input>
                 <button class="button" id="btn-send">Gửi</button>
             </div>
         </div>
