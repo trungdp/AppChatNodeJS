@@ -6,6 +6,7 @@ var io = require('socket.io')(server);
 var mongodb = require('./Database/MongoDB');
 var user = require('./Model/User');
 var message = require('./Model/Message');
+var fs = require('fs');
 var myInfo = new user();
 
 //Chỉ ra đường dẫn chứa css, js, images...
@@ -30,6 +31,11 @@ io.on('connection', function (socket) {
     		user = result;
     	});
     }); 
+
+    fs.readFile('google.png', function(err, data){
+    	socket.emit('imageConversionByClient', { image: true, buffer: data });
+    	socket.emit('imageConversionByServer', "data:google/png;base64,"+ data.toString("base64"));
+    });
 });
 
 mongodb.connect();
