@@ -107,16 +107,16 @@ body{
 	border-radius: 5px;
 }
 .friends-message{
+	float: left;
 }
 #boxchat .messages .friends-message p{
-	float: left;
 	background: lightgrey;
 	color: #000;
 }
 .owner-message{
+	float: right;
 }
 #boxchat .messages .owner-message p{
-	float: right;
 	background: green;
 	color: #fff;
 }

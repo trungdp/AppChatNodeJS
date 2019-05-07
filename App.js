@@ -33,11 +33,12 @@ io.on('connection', function (socket) {
     }); 
 
     socket.on('sendImage',function (data){
-        socket.emit('imageConversionByClient', { image: true, buffer: data.message });
+        socket.emit('imageConversionByClient', data);
+        console.log(data);
     })
 
     socket.on('sendFile',function (data){
-        socket.emit('imageConversionByClient', { image: false, buffer: data.message });
+        socket.emit('imageConversionByClient', data);
     })
 });
 
