@@ -120,9 +120,9 @@ $(function() {
         const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
         var fileType = file.target.files[0].type;
         if ($.inArray(fileType, validImageTypes) < 0) {
-            socket.emit('sendFile', file.target.files[0]);
+            socket.emit('sendFile',  {username: username,message: file.target.files[0] , sendTime: sendTime});
         }else {
-            socket.emit('sendImage', file.target.files[0]);
+            socket.emit('sendImage', {username: username,message: file.target.files[0] , sendTime: sendTime});
         }
     }
 
