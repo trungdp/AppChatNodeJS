@@ -95,10 +95,12 @@ $(function() {
     var convertMessage = (who, data) => {
         $("#messages").append("<li  class=" + who + "> <p>" + data.message + " </p>" +
             "</li>");
+        console.log(who);
     }
 
     var convertImageMessage = (who, data) => {
         var img = $("<li  class=" + who + "> <img src="+data+" width='40%'/> </li>"); 
+        console.log(who);
         img.attr('src', data);
         img.appendTo('#messages');
     }
