@@ -1,221 +1,264 @@
-*{
-	box-sizing: border-box;
-	margin: 0; 
-	padding: 0;
-	font-family: "vertical", "arial";
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "vertical", "arial";
 }
-.icon{
-	width: 32px;
-	height: 32px;
+
+.icon {
+    width: 32px;
+    height: 32px;
 }
-.input{
-	border-radius: 2px;
-	border: none;
-	padding: 3px;
+
+.input {
+    border-radius: 2px;
+    border: none;
+    padding: 3px;
 }
-ul li{
-	list-style-type: none;
+
+ul li {
+    list-style-type: none;
 }
-button{cursor: pointer;}
-.button{
-	border: none;
-	border-radius: 5px;
-	font-weight: bold;
+
+button {
+    cursor: pointer;
 }
-body{
-	background: #fff url(../images/background.png) no-repeat;
-	background-position: center center;
-	background-size: cover;
+
+.button {
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
 }
-#content{
-	font-size: 1em;
-	color: #000;
-	width: 1100px;
-	height: 550px;
-	margin: 30px auto;
-	padding: 10px 10px;
-	border: #000 solid 3px;
-	border-radius: 15px;
-	box-shadow: #000 3px 3px 7px;
+
+body {
+    background: #fff url(../images/background.png) no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+#content {
+    font-size: 1em;
+    color: #000;
+    width: 1100px;
+    height: 550px;
+    margin: 30px auto;
+    padding: 10px 10px;
+    border: #000 solid 3px;
+    border-radius: 15px;
+    box-shadow: #000 3px 3px 7px;
 }
 
 /*-------------------------------------------------------*/
 /*content*/
 /*-------------------------------------------------------*/
-#content #boxchat{
-	width: 750px;
-	height: 520px;
-	background-color: rgba(235, 255, 210, 0.5);
-	float: left;
-}
-/*---------------------------------------------*/
-#boxchat .menu-bar{
-	width: 100%;
-	height: 8%;
-	padding: 5px 5px;
-	position: relative;
-}
-#boxchat .menu-bar .friend-name{
-	margin-left: 5px;
-	margin-top: 3px;
-	float: left;
-	font-size: 1.3em;
-	font-weight: normal;
-}
-#boxchat .menu-bar .setting-icon{
-	float: right;
-	cursor: pointer;
-}
-#boxchat .menu-bar #ip-user-name{
-	margin-top: 2.5px;
-	margin-left: 5px;
-	height: 80%;
+#content #boxchat {
+    width: 750px;
+    height: 520px;
+    background-color: rgba(235, 255, 210, 0.5);
+    float: left;
 }
 
-#boxchat .menu-bar .setting-menu{
-	display: block;
-	position: absolute;
-	background-color: green;
-	width: 150px;
-	right: 5px;
-	top: 45px;
-	border-radius: 2px;
-	box-shadow: #000 3px 3px 7px;
-	color: #fff;
+/*---------------------------------------------*/
+#boxchat .menu-bar {
+    width: 100%;
+    height: 8%;
+    padding: 5px 5px;
+    position: relative;
 }
+
+#boxchat .menu-bar .friend-name {
+    margin-left: 5px;
+    margin-top: 3px;
+    float: left;
+    font-size: 1.3em;
+    font-weight: normal;
+}
+
+#boxchat .menu-bar .setting-icon {
+    float: right;
+    cursor: pointer;
+}
+
+#boxchat .menu-bar #ip-user-name {
+    margin-top: 2.5px;
+    margin-left: 5px;
+    height: 80%;
+}
+
+#boxchat .menu-bar .setting-menu {
+    display: block;
+    position: absolute;
+    background-color: green;
+    width: 150px;
+    right: 5px;
+    top: 45px;
+    border-radius: 2px;
+    box-shadow: #000 3px 3px 7px;
+    color: #fff;
+}
+
 #boxchat .menu-bar .setting-menu li {
-	padding: 10px;
-	cursor: pointer;
+    padding: 10px;
+    cursor: pointer;
 }
-#boxchat .menu-bar .setting-menu li:hover{
-	color: green;
-	background: rgba(235, 255, 210, 1);
-	transition: 0.25s linear;
+
+#boxchat .menu-bar .setting-menu li:hover {
+    color: green;
+    background: rgba(235, 255, 210, 1);
+    transition: 0.25s linear;
 }
+
 /*---------------------------------------------*/
-#boxchat .messages{
-	padding: 5px;
-	width: 100%;
-	height: 82%;
-	border-top: #505050 solid 1px;
-	border-bottom: #505050 solid 1px;
-	overflow-y: scroll;
+#boxchat .messages {
+    padding: 5px;
+    width: 100%;
+    height: 82%;
+    border-top: #505050 solid 1px;
+    border-bottom: #505050 solid 1px;
+    overflow-y: scroll;
 }
-#boxchat .messages p{
-	max-width: 60%;
-	padding: 5px 10px;
-	border-radius: 5px;
+
+#boxchat .messages p {
+    max-width: 60%;
+    padding: 5px 10px;
+    border-radius: 5px;
 }
-.friends-message{
+
+.friends-message {
+}
+
+#boxchat .messages .friends-message p {
+	float: left;
+    background: lightgrey;
+    color: #000;
+}
+#boxchat .messages .friends-message img{
 	float: left;
 }
-#boxchat .messages .friends-message p{
-	background: lightgrey;
-	color: #000;
+
+.owner-message {
 }
-.owner-message{
+
+#boxchat .messages .owner-message p {
+	float: right;
+    background: green;
+    color: #fff;
+}
+#boxchat .messages .owner-message img{
 	float: right;
 }
-#boxchat .messages .owner-message p{
-	background: green;
-	color: #fff;
+
+#boxchat .messages ul li {
+    margin-top: 1px;
+    width: 100%;
+    height: auto;
+    display: table;
 }
-#boxchat .messages ul li{
-	margin-top: 1px;
-	width: 100%;
-	height: auto;
-	display: table;
-}
+
 /*---------------------------------------------*/
-#boxchat .bottom-input{
-	width: 100%;
-	height: 10%;
+#boxchat .bottom-input {
+    width: 100%;
+    height: 10%;
 }
-#boxchat .bottom-input #message-input{
-	padding: 10px;
-	width: 75%;
-	height: 100%;
-	background-color: rgba(235, 255, 210, 0.5);
-	float: left;
+
+#boxchat .bottom-input #message-input {
+    padding: 10px;
+    width: 75%;
+    height: 100%;
+    background-color: rgba(235, 255, 210, 0.5);
+    float: left;
 }
-input[type = "file"]{
-	display: none;
+
+input[type="file"] {
+    display: none;
 }
-#boxchat .bottom-input #choose-file, #boxchat .bottom-input #choose-image{
-	float: left;
-	display: inline-block;
-	padding-left: 3px;
-	padding-right: : 3px;
-	height: 100%;
-	background-color: rgba(235, 255, 210, 0.5);
-	cursor: pointer;
+
+#boxchat .bottom-input #choose-file,
+#boxchat .bottom-input #choose-image {
+    float: left;
+    display: inline-block;
+    padding-left: 3px;
+    padding-right: : 3px;
+    height: 100%;
+    background-color: rgba(235, 255, 210, 0.5);
+    cursor: pointer;
 }
-#boxchat .bottom-input img{
-	margin-top: 10px;
+
+#boxchat .bottom-input img {
+    margin-top: 10px;
 }
-#boxchat .bottom-input #btn-send{
-	width: 14%;
-	height: 40px;
-	background-color: rgba(235, 255, 210, 0.5);
-	border: green solid 2px;
-	color: green;
-	float: right;
-	margin:5px;
+
+#boxchat .bottom-input #btn-send {
+    width: 14%;
+    height: 40px;
+    background-color: rgba(235, 255, 210, 0.5);
+    border: green solid 2px;
+    color: green;
+    float: right;
+    margin: 5px;
 }
-#boxchat .bottom-input #btn-send:hover{
-	background-color: green;
-	color: #fff;
-	transition: 0.25s linear;
+
+#boxchat .bottom-input #btn-send:hover {
+    background-color: green;
+    color: #fff;
+    transition: 0.25s linear;
 }
 
 /*-------------------------------------------------------*/
 /*right list friend*/
 /*-------------------------------------------------------*/
-#right-list{
-	width: 280px;
-	height: 520px;
-	float: left;
-	margin-left: 30px;
-	background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.3));
-	overflow-y: scroll;
+#right-list {
+    width: 280px;
+    height: 520px;
+    float: left;
+    margin-left: 30px;
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.3));
+    overflow-y: scroll;
 }
-#right-list .find-friend{
-	margin: 0 auto;
-	background: #fff;
-	width: 99%;
-	height: 30px;
+
+#right-list .find-friend {
+    margin: 0 auto;
+    background: #fff;
+    width: 99%;
+    height: 30px;
 }
-#right-list .find-friend .ip-find-friend{
-	width: 90%;
-	float: right;
-	text-align: center;
+
+#right-list .find-friend .ip-find-friend {
+    width: 90%;
+    float: right;
+    text-align: center;
 }
-#right-list ul li{
-	width: 100%;
-	height: 50px;
+
+#right-list ul li {
+    width: 100%;
+    height: 50px;
 }
+
 /*-------------------------------------------------------*/
 /*fixed button*/
 /*-------------------------------------------------------*/
-.green-button{
-	background-color: green;
-	color: #fff;
+.green-button {
+    background-color: green;
+    color: #fff;
 }
-.green-button:hover{
-	color: green;
-	background-color: rgba(235, 255, 210, 1);
-	border: green solid 2px;
-	transition: 0.2s linear;
+
+.green-button:hover {
+    color: green;
+    background-color: rgba(235, 255, 210, 1);
+    border: green solid 2px;
+    transition: 0.2s linear;
 }
-#float-button{
-	display: none;
-	width: 250px;
-	height: 50px;
-	box-shadow: #000 3px 3px 7px;
-	position: fixed;
-	bottom: 300px;
-	right: 180px;
+
+#float-button {
+    display: none;
+    width: 250px;
+    height: 50px;
+    box-shadow: #000 3px 3px 7px;
+    position: fixed;
+    bottom: 300px;
+    right: 180px;
 }
-#float-button:hover{
-	box-shadow: none;
+
+#float-button:hover {
+    box-shadow: none;
 }

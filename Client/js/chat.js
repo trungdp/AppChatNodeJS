@@ -96,6 +96,7 @@ $(function() {
     var convertMessage = (who, data) => {
         $("#messages").append("<li  class=" + who + "> <p>" + data.message + " </p>" +
             "</li>");
+        console.log(who);
     }
 
     var convertImageMessage = (who, data) => {

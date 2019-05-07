@@ -17,13 +17,18 @@ app.get("/", function (req, res) {
     res.sendFile(path.join(__dirname + '/Client/login.html'));
 });
 
+//let roomno = 1;
 //Tạo socket 
 io.on('connection', function (socket) {
 	console.log('Connected');
+
+    /*if((io.nsps['/'].adapter.rooms["room-"+roomno]) && (io.nsps['/'].adapter.rooms["room-"+roomno].length > 1)) roomno++;
+    socket.join("room-"+roomno);*/
+
+
     socket.on('send', function (data) {
         io.sockets.emit('send', data);
     });
-
     socket.on('signin',function (data){
     	mongodb.isValidateUser(data,function(result){
     		console.log(result);
