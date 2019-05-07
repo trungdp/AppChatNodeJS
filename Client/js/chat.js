@@ -20,7 +20,7 @@ $(function() {
     });
 
     socket.on('imageConversionByClient', function(data) {
-        var result = "data:image/png;base64,"+convertB64(data.buffer)
+        var result = "data:image/png;base64,"+convertB64(data.message)
         var username = $('#ip-user-name').val();
         var owner = 'owner-message';
         var friend = 'friends-message';
@@ -37,10 +37,10 @@ $(function() {
         var owner = 'owner-message';
         var friend = 'friends-message';
         if (data.username === username) {
-            convertImageMessage(owner, data);
+            convertImageMessage(owner, data.message);
         } else {
             $('#friend-name').text(data.username);
-            convertImageMessage(friend, data);
+            convertImageMessage(friend, data.message);
         }
     });
 
@@ -120,11 +120,14 @@ $(function() {
 
     var sendFile = (file) => {
         const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
-        var fileType = file.target.files[0].type;
+        const fileType = file.target.files[0].type;
+        const username = $('#ip-user-name').val();
+        const message = $('#message-input').val();
+        const sendTime = new Date().getHours();
         if ($.inArray(fileType, validImageTypes) < 0) {
-            socket.emit('sendFile', file.target.files[0]);
+            socket.emit('sendFile',  {username: username,message: file.target.files[0] , sendTime: sendTime});
         }else {
-            socket.emit('sendImage', file.target.files[0]);
+            socket.emit('sendImage', {username: username,message: file.target.files[0] , sendTime: sendTime});
         }
     }
 
