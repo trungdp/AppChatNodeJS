@@ -38,7 +38,7 @@ io.on('connection', function (socket) {
     })
 
     socket.on('sendFile',function (data){
-        socket.emit('imageConversionByClient', data);
+        socket.emit('receiveFile', data);
     })
 });
 

@@ -32,15 +32,16 @@ $(function() {
         }
     });
 
-    socket.on('imageConversionByServer', function(data) {
+    socket.on('receiveFile', function(data) {
+        var result = "data:image/png;base64,"+convertB64(data.message)
         var username = $('#ip-user-name').val();
         var owner = 'owner-message';
         var friend = 'friends-message';
         if (data.username === username) {
-            convertImageMessage(owner, data.message);
+            convertImageMessage(owner, result);
         } else {
             $('#friend-name').text(data.username);
-            convertImageMessage(friend, data.message);
+            convertImageMessage(friend, result);
         }
     });
 
@@ -98,6 +99,13 @@ $(function() {
     }
 
     var convertImageMessage = (who, data) => {
+        var img = $("<li  class=" + who + "> <img src="+data+" width='40%'/> </li>"); 
+        console.log(who);
+        img.attr('src', data);
+        img.appendTo('#messages');
+    }
+
+    var convertFileMessage = (who, data) => {
         var img = $("<li  class=" + who + "> <img src="+data+" width='40%'/> </li>"); 
         console.log(who);
         img.attr('src', data);
