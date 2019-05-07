@@ -32,10 +32,9 @@ io.on('connection', function (socket) {
     	});
     }); 
 
-    fs.readFile('google.png', function(err, data){
-    	socket.emit('imageConversionByClient', { image: true, buffer: data });
-    	socket.emit('imageConversionByServer', "data:google/png;base64,"+ data.toString("base64"));
-    });
+    socket.on('sendImage',function (file){
+        socket.emit('imageConversionByClient', { image: true, buffer: file });
+    })
 });
 
 mongodb.connect();

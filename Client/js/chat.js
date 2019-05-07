@@ -85,17 +85,20 @@ $(function() {
         }
     });
 
+    $('input[type="file"]').change(function(file){
+        sendFile(file);
+    });
+
     //**************************************************************************
     //Hàm xử lý
     //**************************************************************************
     var convertMessage = (who, data) => {
-        $("#messages").append("<li  class=" + who + "> <p>" +
-            data.username + ": " + data.message + " </p>" +
+        $("#messages").append("<li  class=" + who + "> <p>" + data.message + " </p>" +
             "</li>");
     }
 
     var convertImageMessage = (who, data) => {
-        var img = $('<img id="dynamic"  width="40%">'); 
+        var img = $("<li  class=" + who + "> <img src="+data+" width='40%'/> </li>"); 
         img.attr('src', data);
         img.appendTo('#messages');
     }
@@ -110,6 +113,16 @@ $(function() {
             $('#message-input').val('');
             //Gửi dữ liệu cho socket
             socket.emit('send', { username: username, message: message, sendTime: sendTime });
+        }
+    }
+
+    var sendFile = (file) => {
+        const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+        var fileType = file.target.files[0].type;
+        if ($.inArray(fileType, validImageTypes) < 0) {
+            socket.emit('sendFile', file.target.files[0]);
+        }else {
+            socket.emit('sendImage', file.target.files[0]);
         }
     }
 
