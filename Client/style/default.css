@@ -132,7 +132,7 @@ body {
     background: lightgrey;
     color: #000;
 }
-#boxchat .messages .friends-message img{
+#boxchat .messages .friends-message img, #boxchat .messages .friends-message a{
 	float: left;
 }
 
@@ -144,7 +144,7 @@ body {
     background: green;
     color: #fff;
 }
-#boxchat .messages .owner-message img{
+#boxchat .messages .owner-message img,#boxchat .messages .owner-message a{
 	float: right;
 }
 

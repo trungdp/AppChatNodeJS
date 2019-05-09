@@ -36,15 +36,6 @@ io.on('connection', function (socket) {
     		user = result;
     	});
     }); 
-
-    socket.on('sendImage',function (data){
-        socket.emit('imageConversionByClient', data);
-        console.log(data);
-    })
-
-    socket.on('sendFile',function (data){
-        socket.emit('receiveFile', data);
-    })
 });
 
 mongodb.connect();
