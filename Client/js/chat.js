@@ -19,31 +19,6 @@ $(function() {
         }
     });
 
-    socket.on('imageConversionByClient', function(data) {
-        var result = "data:image/png;base64," + convertB64(data.message)
-        var username = $('#ip-user-name').val();
-        var owner = 'owner-message';
-        var friend = 'friends-message';
-        if (data.username === username) {
-            convertImageMessage(owner, result);
-        } else {
-            $('#friend-name').text(data.username);
-            convertImageMessage(friend, result);
-        }
-    });
-
-    socket.on('imageConversionByServer', function(data) {
-        var username = $('#ip-user-name').val();
-        var owner = 'owner-message';
-        var friend = 'friends-message';
-        if (data.username === username) {
-            convertImageMessage(owner, data.message);
-        } else {
-            $('#friend-name').text(data.username);
-            convertImageMessage(friend, data.message);
-        }
-    });
-
     //**************************************************************************
     //UI Event
     //**************************************************************************
@@ -104,16 +79,22 @@ $(function() {
     //Hàm xử lý
     //**************************************************************************
     var convertMessage = (who, data) => {
-        $("#messages").append("<li  class=" + who + "> <p>" + data.message + " </p>" +
+        const validImageTypes = ["image/gif", "image/jpeg", "image/png","image/ico"];
+        if (data.type === "text"){
+            $("#messages").append("<li  class=" + who + "> <p>" + data.object + " </p>" +
             "</li>");
+        } else if ($.inArray(data.type, validImageTypes) >= 0){
+            var result = "data:image/png;base64,"+convertB64(data.object)
+            var li = $("<li  class=" + who + "> <img src="+result+" width='40%'/> </li>"); 
+            li.appendTo('#messages');
+        } else {
+            var li = $("<li class=" + who + ">  </li>"); 
+            var a = $("<a download='file.txt' href='data:application/octet-stream,'> downfile </a>");
+            a.appendTo(li);
+            li.appendTo('#messages');
+        }
+        console.log(data.type);
         console.log(who);
-    }
-
-    var convertImageMessage = (who, data) => {
-        var img = $("<li  class=" + who + "> <img src=" + data + " width='40%'/> </li>");
-        console.log(who);
-        img.attr('src', data);
-        img.appendTo('#messages');
     }
 
     var sendMessage = () => {
@@ -125,29 +106,33 @@ $(function() {
         } else {
             $('#message-input').val('');
             //Gửi dữ liệu cho socket
-            socket.emit('send', { username: username, message: message, sendTime: sendTime });
+            socket.emit('send', { username: username,type:"text", sendTime: sendTime, object:message});
         }
     }
 
     var sendFile = (file) => {
-        const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
-        const fileType = file.target.files[0].type;
         const username = $('#ip-user-name').val();
         const message = $('#message-input').val();
         const sendTime = new Date().getHours();
-        if ($.inArray(fileType, validImageTypes) < 0) {
-            socket.emit('sendFile', { username: username, message: file.target.files[0], sendTime: sendTime });
-        } else {
-            socket.emit('sendImage', { username: username, message: file.target.files[0], sendTime: sendTime });
-        }
+        // foreach(file.target.files,function(item){
+            // const fileType = item.type;
+            // socket.emit('send', {username: username,type:fileType ,
+            //                      sendTime: sendTime,object: item});
+        // });
+        Array.from(file.target.files).forEach((item)=>{
+            const fileType = item.type;
+            socket.emit('send', {username: username,type:fileType ,
+                                 sendTime: sendTime,object: item});
+        })
+
     }
 
-    function convertB64(data) {
-        var t = "";
-        var n = new Uint8Array(data);
-        var r = n.byteLength;
-        for (var i = 0; i < r; i++) {
-            t += String.fromCharCode(n[i])
+    function convertB64(data){
+        var t="";
+        var n=new Uint8Array(data);
+        var r=n.byteLength;
+        for(var i=0;i<r;i++) {
+            t+=String.fromCharCode(n[i])
         }
         return window.btoa(t)
     }
