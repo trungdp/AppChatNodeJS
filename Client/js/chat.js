@@ -20,7 +20,7 @@ $(function() {
     });
 
     socket.on('imageConversionByClient', function(data) {
-        var result = "data:image/png;base64,"+convertB64(data.message)
+        var result = "data:image/png;base64," + convertB64(data.message)
         var username = $('#ip-user-name').val();
         var owner = 'owner-message';
         var friend = 'friends-message';
@@ -69,13 +69,24 @@ $(function() {
     $('#setting-menu').hide();
     $("#ip-user-name").hide();
 
-    $('#setting-icon').on('click',()=> {
+    $('#setting-icon').on('click', () => {
         $('#setting-menu').toggle(50, 'linear');
     });
     //chon menu item thay doi biet hieu
-    $('#menu-change-name').on('click', ()=>{
+    $('#menu-change-name').on('click', () => {
         $('#ip-user-name').toggle(50);
     });
+/*test join room
+--------------------------------------------------*/
+    $('#menu-join-room').on('click', () => {
+        $('#input-join-room').toggle(50);
+        $('#btn-join-room').toggle(50);
+    });
+    $('#btn-join-room').on('click', ()=>{
+        joinRoom($('#ip-join-room').val());
+        console.log("$('#ip-join-room').val() = " +$('#ip-join-room').val());
+    })
+/*--------------------------------------------------*/
     //nhan enter len input, doi biet hieu
     $("#ip-user-name").on('keypress', (e) => {
         //vì một số browser dùng keyCode, một số dùng keyWhich, nên lấy 1 trong 2
@@ -85,7 +96,7 @@ $(function() {
         }
     });
 
-    $('input[type="file"]').change(function(file){
+    $('input[type="file"]').change(function(file) {
         sendFile(file);
     });
 
@@ -99,7 +110,7 @@ $(function() {
     }
 
     var convertImageMessage = (who, data) => {
-        var img = $("<li  class=" + who + "> <img src="+data+" width='40%'/> </li>"); 
+        var img = $("<li  class=" + who + "> <img src=" + data + " width='40%'/> </li>");
         console.log(who);
         img.attr('src', data);
         img.appendTo('#messages');
@@ -125,20 +136,24 @@ $(function() {
         const message = $('#message-input').val();
         const sendTime = new Date().getHours();
         if ($.inArray(fileType, validImageTypes) < 0) {
-            socket.emit('sendFile',  {username: username,message: file.target.files[0] , sendTime: sendTime});
-        }else {
-            socket.emit('sendImage', {username: username,message: file.target.files[0] , sendTime: sendTime});
+            socket.emit('sendFile', { username: username, message: file.target.files[0], sendTime: sendTime });
+        } else {
+            socket.emit('sendImage', { username: username, message: file.target.files[0], sendTime: sendTime });
         }
     }
 
-    function convertB64(data){
-        var t="";
-        var n=new Uint8Array(data);
-        var r=n.byteLength;
-        for(var i=0;i<r;i++) {
-            t+=String.fromCharCode(n[i])
+    function convertB64(data) {
+        var t = "";
+        var n = new Uint8Array(data);
+        var r = n.byteLength;
+        for (var i = 0; i < r; i++) {
+            t += String.fromCharCode(n[i])
         }
         return window.btoa(t)
     }
-    
+
+    var joinRoom = (roomName)=>{
+        socket.emit('joinRoom', roomName);
+    }
+
 });
