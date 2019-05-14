@@ -7,6 +7,15 @@ $(function() {
     //**************************************************************************
     //Socket event
     //**************************************************************************
+    socket.on('roomOrder', (data) => {
+        data.map((room) => {
+            var newRoom = document.createElement("P");
+            newRoom.className = 'green-button room';
+            newRoom.innerHTML = room.name;
+            newRoom.addEventListener("click",()=>{socket.emit('joinRoom', room.name); $('#rooms').hide();});
+            $('#rooms').append(newRoom);
+        })
+    });
     socket.on("send", function(data) {
         var username = $('#ip-user-name').val();
         var owner = 'owner-message';
@@ -51,17 +60,12 @@ $(function() {
     $('#menu-change-name').on('click', () => {
         $('#ip-user-name').toggle(50);
     });
-/*test join room
---------------------------------------------------*/
+    /*test join room
+    --------------------------------------------------*/
     $('#menu-join-room').on('click', () => {
-        $('#input-join-room').toggle(50);
-        $('#btn-join-room').toggle(50);
+        $('#rooms').show();
     });
-    $('#btn-join-room').on('click', ()=>{
-        joinRoom($('#ip-join-room').val());
-        console.log("$('#ip-join-room').val() = " +$('#ip-join-room').val());
-    })
-/*--------------------------------------------------*/
+    /*--------------------------------------------------*/
     //nhan enter len input, doi biet hieu
     $("#ip-user-name").on('keypress', (e) => {
         //vì một số browser dùng keyCode, một số dùng keyWhich, nên lấy 1 trong 2
@@ -75,20 +79,22 @@ $(function() {
         sendFile(file);
     });
 
+    //
+
     //**************************************************************************
     //Hàm xử lý
     //**************************************************************************
     var convertMessage = (who, data) => {
-        const validImageTypes = ["image/gif", "image/jpeg", "image/png","image/ico"];
-        if (data.type === "text"){
+        const validImageTypes = ["image/gif", "image/jpeg", "image/png", "image/ico"];
+        if (data.type === "text") {
             $("#messages").append("<li  class=" + who + "> <p>" + data.object + " </p>" +
-            "</li>");
-        } else if ($.inArray(data.type, validImageTypes) >= 0){
-            var result = "data:image/png;base64,"+convertB64(data.object)
-            var li = $("<li  class=" + who + "> <img src="+result+" width='40%'/> </li>"); 
+                "</li>");
+        } else if ($.inArray(data.type, validImageTypes) >= 0) {
+            var result = "data:image/png;base64," + convertB64(data.object)
+            var li = $("<li  class=" + who + "> <img src=" + result + " width='40%'/> </li>");
             li.appendTo('#messages');
         } else {
-            var li = $("<li class=" + who + ">  </li>"); 
+            var li = $("<li class=" + who + ">  </li>");
             var a = $("<a download='file.txt' href='data:application/octet-stream,'> downfile </a>");
             a.appendTo(li);
             li.appendTo('#messages');
@@ -106,7 +112,8 @@ $(function() {
         } else {
             $('#message-input').val('');
             //Gửi dữ liệu cho socket
-            socket.emit('send', { username: username,type:"text", sendTime: sendTime, object:message});
+            console.log(message);
+            socket.emit('send', { username: username, type: "text", sendTime: sendTime, object: message });
         }
     }
 
@@ -115,30 +122,32 @@ $(function() {
         const message = $('#message-input').val();
         const sendTime = new Date().getHours();
         // foreach(file.target.files,function(item){
-            // const fileType = item.type;
-            // socket.emit('send', {username: username,type:fileType ,
-            //                      sendTime: sendTime,object: item});
+        // const fileType = item.type;
+        // socket.emit('send', {username: username,type:fileType ,
+        //                      sendTime: sendTime,object: item});
         // });
-        Array.from(file.target.files).forEach((item)=>{
+        Array.from(file.target.files).forEach((item) => {
             const fileType = item.type;
-            socket.emit('send', {username: username,type:fileType ,
-                                 sendTime: sendTime,object: item});
+            socket.emit('send', {
+                username: username,
+                type: fileType,
+                sendTime: sendTime,
+                object: item
+            });
         })
 
     }
 
-    function convertB64(data){
-        var t="";
-        var n=new Uint8Array(data);
-        var r=n.byteLength;
-        for(var i=0;i<r;i++) {
-            t+=String.fromCharCode(n[i])
+    function convertB64(data) {
+        var t = "";
+        var n = new Uint8Array(data);
+        var r = n.byteLength;
+        for (var i = 0; i < r; i++) {
+            t += String.fromCharCode(n[i])
         }
         return window.btoa(t)
     }
-
-    var joinRoom = (roomName)=>{
+    var joinRoom = (roomName) => {
         socket.emit('joinRoom', roomName);
     }
-
 });

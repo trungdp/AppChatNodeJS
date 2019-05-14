@@ -12,31 +12,29 @@ var myInfo = new user();
 //Chỉ ra đường dẫn chứa css, js, images...
 app.use(express.static(path.join(__dirname, 'Client')));
 
-//Tạo router
-app.get("/", function(req, res) {
-    res.sendFile(path.join(__dirname + '/Client/login.html'));
-});
-
-//let roomno = 1;
+let rooms = [{ name: "1", userCount: 0 }, { name: "2", userCount: 0 }, { name: "3", userCount: 0 }];
+var usernameCount = 0;
 //Tạo socket 
 io.on('connection', function(socket) {
     console.log('Connected');
+    socket.emit('roomOrder', rooms);
 
     socket.on('joinRoom', (data) => {
-        let roomName = data;
-        console.log('roomName = '+ roomName);
+        var roomName = data;
 
         socket.join("room-" + roomName);
+        console.log(socket.remoteAddress +"joined to" + roomName);
+        console.log('roomName = '+ roomName);
 
         socket.on('send', function(data) {
+            console.log(data.name+": "+data.object);
             io.sockets.in("room-"+roomName).emit('send', data);
         });
     });
-
     socket.on('signin', function(data) {
         mongodb.isValidateUser(data, function(result) {
             console.log(result);
-            io.sockets.emit('signin', result.name != "");
+            socket.emit('signin', result.name != "");
             user = result;
         });
     });

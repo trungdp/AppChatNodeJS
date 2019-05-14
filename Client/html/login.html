@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="icon" href="../images/chat-logo.ico" sizes="16x16">
+    <link rel="stylesheet" type="text/css" href="../style/default.css">
+    <link rel="stylesheet" type="text/css" href="../style/login.css">
+    <script src="../js/socket.io.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/chat.js"></script>
+    <script src="../js/login.js"></script>
+</head>
+
+<body>
+    <div id="signin">
+        <button class="button green-button" id="btn-switch-login">Đăng ký</button>
+        <img class="logo" src="../images/chat-logo.ico" title="logo" alt="logo">
+        <div class="signin-title" id="signin-title">
+            <h1 id="h1-title">ĐĂNG NHẬP</h1>
+            <p>Chat miễn phí với nhiều tính năng hơn</p>
+        </div>
+        <input type="text" name="user-name" id="user-name" placeholder="Tên tài khoản" /><br>
+        <input type="password" name="password" id="password" placeholder="Mật khẩu" /><br>
+        <input type="password" name="password-confirm" id="password-confirm" placeholder="Xác nhận mật khẩu" /><br>
+        <button class="button" id="btn-continue">Tiếp tục</button>
+        <button class="button" id="btn-skip">Bỏ qua</button><br>
+        <p id="bottom-note"><a id="note-link" href="#">Quên mật khẩu?</a></p>
+    </div>
+</body>
+
+</html>
