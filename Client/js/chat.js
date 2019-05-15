@@ -7,6 +7,10 @@ $(function() {
     $("#message-input").emojioneArea({
         // container: "#message-input",       
     });
+    const constraints = window.constraints = {
+        audio: false,
+        video: true
+    };
 
     //**************************************************************************
     //Socket event
@@ -47,6 +51,10 @@ $(function() {
     $("#btn-send").on('click', function() {
         sendMessage();
         $('.emojionearea-editor').empty();
+    });
+
+    $('input[type="file"]').change(function(file){
+        sendFile(file);
     });
 
     $("#message-input").on('keypress', (e) => {
@@ -174,5 +182,47 @@ $(function() {
     }
     var joinRoom = (roomName) => {
         socket.emit('joinRoom', roomName);
+    }
+
+    function handleError(error) {
+        if (error.name === 'ConstraintNotSatisfiedError') {
+            let v = constraints.video;
+            errorMsg(`The resolution ${v.width.exact}x${v.height.exact} px is not supported by your device.`);
+        } else if (error.name === 'PermissionDeniedError') {
+            errorMsg('Permissions have not been granted to use your camera and ' +
+                        'microphone, you need to allow the page access to your devices in ' +
+                        'order for the demo to work.');
+        }
+        errorMsg(`getUserMedia error: ${error.name}`, error);
+    }
+
+    function errorMsg(msg, error) {
+        const errorElement = document.querySelector('#errorMsg');
+        errorElement.innerHTML += "<p>${msg}</p>";
+        if (typeof error !== 'undefined') {
+            console.log(error);
+        }
+    }
+
+    function init(e){
+        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+        if (navigator.getUserMedia) {
+            navigator.getUserMedia({ audio: true, video: { width: 1280, height: 720 } },
+                function(stream) {
+                    var video = document.querySelector('video');
+                    video.srcObject = stream;
+                    window.stream = stream;
+                    video.onloadedmetadata = function(e) {
+                        video.play();
+                    };
+                },
+                function(err) {
+                    console.log("The following error occurred: " + err.name);
+                }
+            );
+        } else {
+            console.log("getUserMedia not supported");
+        }
     }
 });

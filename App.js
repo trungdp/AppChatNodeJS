@@ -7,7 +7,7 @@ var mongodb = require('./Database/MongoDB');
 var user = require('./Model/User');
 var message = require('./Model/Message');
 var fs = require('fs');
-var myInfo = new user();
+const Conversation = require("./Model/Conversation");
 
 //Chỉ ra đường dẫn chứa css, js, images...
 app.use(express.static(path.join(__dirname, 'Client')));
@@ -53,11 +53,9 @@ io.on('connection', function(socket) {
 var roomOrder = (socket) => {
     socket.emit('roomOrder', rooms);
 }
-
-mongodb.connect();
-mongodb.createTable("User");
-var obj1 = { name: "trung", pass: "1" };
-var obj2 = { name: "vu", pass: "2" };
-var obj3 = { name: "quan", pass: "3" };
-mongodb.insert([obj1, obj2, obj3], "User");
+mongodb.useTable("Conversation");
+var conversation = new Conversation(["abc","123"].sort());
+mongodb.findRoom(["abc","1234"],function(id){
+    console.log(id);
+})
 server.listen(3000);
