@@ -47,7 +47,6 @@ $(function() {
     //**************************************************************************
     //UI Event
     //**************************************************************************
-
     $("#btn-send").on('click', function() {
         sendMessage();
         $('.emojionearea-editor').empty();
@@ -90,6 +89,9 @@ $(function() {
     //chon menu item thay doi biet hieu
     $('#menu-change-name').on('click', () => {
         $('#ip-user-name').toggle(50);
+    });
+    $('#call').on('click', ()=>{
+        alert('call');
     });
     //join room
     /*--------------------------------------------------*/
