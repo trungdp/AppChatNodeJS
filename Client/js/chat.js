@@ -4,6 +4,9 @@ $(function() {
     //**************************************************************************
     var socket = io.connect('http://localhost:3000');
     let roomName;
+    $("#message-input").emojioneArea({
+        // container: "#message-input",
+    });
 
     //**************************************************************************
     //Socket event
