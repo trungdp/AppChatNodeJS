@@ -41,7 +41,7 @@ body {
 /*-------------------------------------------------------*/
 #rooms-order {
     position: absolute;
-    z-index: 1;
+    z-index: 6;
     color: #000;
     width: 1100px;
     height: 550px;
@@ -233,7 +233,7 @@ input[type="file"] {
     cursor: pointer;
 }
 
-#boxchat .bottom-input img {
+#boxchat .bottom-input label img {
     margin-top: 10px;
 }
 

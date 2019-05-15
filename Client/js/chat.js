@@ -5,7 +5,7 @@ $(function() {
     var socket = io.connect('http://localhost:3000');
     let roomName;
     $("#message-input").emojioneArea({
-        // container: "#message-input",
+        // container: "#message-input",       
     });
 
     //**************************************************************************
@@ -46,6 +46,7 @@ $(function() {
 
     $("#btn-send").on('click', function() {
         sendMessage();
+        $('.emojionearea-editor').empty();
     });
 
     $("#message-input").on('keypress', (e) => {
@@ -53,6 +54,16 @@ $(function() {
         var keyCode = (e.keyCode ? e.keyCode : e.keyWhich);
         if (keyCode == '13') {
             sendMessage();
+            $('.emojionearea-editor').empty();
+        }
+    });
+
+    $(".emojionearea-editor").change(function() {
+        var text =  $(".emojionearea-editor").text();
+        alert(text);
+        if (keyCode == '13') {
+            sendMessage();
+            $('.emojionearea-editor').empty();
         }
     });
 
@@ -91,10 +102,10 @@ $(function() {
         sendFile(file);
     });
 
-    $('#btn-add-room').on('click', ()=>{
+    $('#btn-add-room').on('click', () => {
         $('#create-room').toggle(30);
     });
-    $('#btn-confirm-create').on('click', ()=>{
+    $('#btn-confirm-create').on('click', () => {
         var newName = $('#ip-new-room').val();
         socket.emit('createRoom', newName);
         console.log(newName);
