@@ -3,16 +3,25 @@ $(function() {
     //Define
     //**************************************************************************
     var socket = io.connect('http://localhost:3000');
+    let roomName;
 
     //**************************************************************************
     //Socket event
     //**************************************************************************
     socket.on('roomOrder', (data) => {
+        $('#rooms').empty();
         data.map((room) => {
             var newRoom = document.createElement("P");
             newRoom.className = 'button green-button room';
             newRoom.innerHTML = room.name;
-            newRoom.addEventListener("click",()=>{socket.emit('joinRoom', room.name); $('#rooms').hide();});
+            newRoom.addEventListener("click", () => {
+                //neu da co phong thi roi khoi phong truoc khi tham gia phong moi
+                if (roomName) { socket.emit('leaveRoom', roomName) };
+                roomName = room.name;
+                socket.emit('joinRoom', roomName);
+                $('#rooms-order').hide();
+                $('#friend-name').text(roomName);
+            });
             $('#rooms').append(newRoom);
         })
     });
@@ -23,7 +32,7 @@ $(function() {
         if (data.username === username) {
             convertMessage(owner, data);
         } else {
-            $('#friend-name').text(data.username);
+            //$('#friend-name').text(data.username);
             convertMessage(friend, data);
         }
     });
@@ -60,10 +69,10 @@ $(function() {
     $('#menu-change-name').on('click', () => {
         $('#ip-user-name').toggle(50);
     });
-    /*test join room
-    --------------------------------------------------*/
+    //join room
+    /*--------------------------------------------------*/
     $('#menu-join-room').on('click', () => {
-        $('#rooms').show();
+        $('#rooms-order').show();
     });
     /*--------------------------------------------------*/
     //nhan enter len input, doi biet hieu
@@ -79,7 +88,14 @@ $(function() {
         sendFile(file);
     });
 
-    //
+    $('#btn-add-room').on('click', ()=>{
+        $('#create-room').toggle(30);
+    });
+    $('#btn-confirm-create').on('click', ()=>{
+        var newName = $('#ip-new-room').val();
+        socket.emit('createRoom', newName);
+        console.log(newName);
+    });
 
     //**************************************************************************
     //Hàm xử lý
@@ -121,11 +137,6 @@ $(function() {
         const username = $('#ip-user-name').val();
         const message = $('#message-input').val();
         const sendTime = new Date().getHours();
-        // foreach(file.target.files,function(item){
-        // const fileType = item.type;
-        // socket.emit('send', {username: username,type:fileType ,
-        //                      sendTime: sendTime,object: item});
-        // });
         Array.from(file.target.files).forEach((item) => {
             const fileType = item.type;
             socket.emit('send', {

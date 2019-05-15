@@ -14,9 +14,15 @@
 </head>
 
 <body>
-    <div id="rooms">
+    <div id="rooms-order">
         <h1 id="rooms-title">DANH SÁCH PHÒNG CHAT</h1>
+        <div id="rooms"></div>
         <button class="button green-button" id="btn-add-room">+</button>
+        <div id="create-room">
+            <script type="text/javascript">$('#create-room').hide();</script>
+            <input type="text" name="new-room" id="ip-new-room" placeholder="Nhập tên phòng mới">
+            <button id="btn-confirm-create">Tạo</button>
+        </div>
     </div>
     <div id='content'>
         <div id="boxchat">

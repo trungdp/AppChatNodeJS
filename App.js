@@ -17,20 +17,7 @@ var usernameCount = 0;
 //Tạo socket 
 io.on('connection', function(socket) {
     console.log('Connected');
-    socket.emit('roomOrder', rooms);
 
-    socket.on('joinRoom', (data) => {
-        var roomName = data;
-
-        socket.join("room-" + roomName);
-        console.log(socket.remoteAddress +"joined to" + roomName);
-        console.log('roomName = '+ roomName);
-
-        socket.on('send', function(data) {
-            console.log(data.name+": "+data.object);
-            io.sockets.in("room-"+roomName).emit('send', data);
-        });
-    });
     socket.on('signin', function(data) {
         mongodb.isValidateUser(data, function(result) {
             console.log(result);
@@ -38,7 +25,34 @@ io.on('connection', function(socket) {
             user = result;
         });
     });
+
+//room handle---------------------------------------------
+    roomOrder(socket);
+    socket.on('joinRoom', (data) => {
+        var roomName = data;
+
+        socket.join("room-" + roomName);
+        console.log(socket.remoteAddress + " joined to " + roomName);
+
+        socket.on('send', function(data) {
+            console.log(data.name + ": " + data.object);
+            io.sockets.in("room-" + roomName).emit('send', data);
+        });
+    });
+    socket.on('leaveRoom', (data) => {
+        socket.leave("room-" + data);
+        console.log(socket.remoteAddress + " left " + data);
+    });
+    socket.on('createRoom', (data) => {
+        rooms.push({ name: data, userCount: 0 });
+        console.log("created room");
+        roomOrder(socket);
+    });
 });
+
+var roomOrder = (socket) => {
+    socket.emit('roomOrder', rooms);
+}
 
 mongodb.connect();
 mongodb.createTable("User");

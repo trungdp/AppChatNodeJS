@@ -39,7 +39,7 @@ body {
 /*-------------------------------------------------------*/
 /*rooms*/
 /*-------------------------------------------------------*/
-#rooms {
+#rooms-order {
     position: absolute;
     z-index: 1;
     color: #000;
@@ -54,7 +54,7 @@ body {
     left: 10%
 }
 
-#rooms .room {
+#rooms-order .room {
     float: left;
     width: 100px;
     height: 100px;
@@ -64,7 +64,7 @@ body {
     box-shadow: inset 0 0 10px #000000;
 }
 
-#rooms #btn-add-room {
+#rooms-order #btn-add-room {
     width: 70px;
     height: 70px;
     position: fixed;
@@ -75,7 +75,7 @@ body {
     box-shadow: #000 0px 10px 8px -6px;
 }
 
-#rooms #rooms-title {
+#rooms-order #rooms-title {
     font-size: 3em;
     color: #000;
     margin-left: 20%;
