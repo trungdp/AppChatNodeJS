@@ -12,7 +12,7 @@ var myInfo = new user();
 //Chỉ ra đường dẫn chứa css, js, images...
 app.use(express.static(path.join(__dirname, 'Client')));
 
-let rooms = [{ name: "1", userCount: 0 }, { name: "2", userCount: 0 }, { name: "3", userCount: 0 }];
+let rooms = [{ name: "Phòng 1", userCount: 0 }, { name: "Phòng 2", userCount: 0 }, { name: "Phòng 3", userCount: 0 }];
 var usernameCount = 0;
 //Tạo socket 
 io.on('connection', function(socket) {

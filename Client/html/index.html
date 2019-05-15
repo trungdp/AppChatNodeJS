@@ -15,8 +15,8 @@
 
 <body>
     <div id="rooms">
-        <button class="button green-button">+</button>
-        <button class="button green-button">x</button>
+        <h1 id="rooms-title">DANH SÁCH PHÒNG CHAT</h1>
+        <button class="button green-button" id="btn-add-room">+</button>
     </div>
     <div id='content'>
         <div id="boxchat">
@@ -26,8 +26,9 @@
                 <img class="icon setting-icon" id="setting-icon" src="../images/SetingIcon.png">
                 <ul class="setting-menu" id="setting-menu">
                     <li id="menu-change-name">Đổi biệt hiệu</li>
+                    <li id="menu-join-room">Chọn Phòng</li>
+                    <li id="menu-signin">Đăng nhập</li>
                     <li id="menu-signout">Đăng xuất</li>
-                    <li id="menu-join-room">Chọn Phòng<li>
                 </ul>
             </div>
             <div class="messages">
@@ -43,7 +44,9 @@
                     <img class="icon" src="../images/add-image-icon.png" alt="add image" title="add image">
                     <input type="file" name="" accept="image/png, image/jpeg">
                 </label>
-                <button class="icon" id="choose-emoji">Gửi</button>
+                <label id="choose-emoji">
+                    <img src="../images/emojji-icon.png" class="icon" />
+                </label>
                 </input>
                 <button class="button" id="btn-send">Gửi</button>
             </div>
@@ -56,7 +59,6 @@
             </ul>
         </div>
     </div>
-    <button class="button green-button" id="float-button" onclick="document.getElementById('id01').style.display='none'">Login</button>
 </body>
 
 </html>

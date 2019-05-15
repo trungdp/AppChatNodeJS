@@ -10,7 +10,7 @@ $(function() {
     socket.on('roomOrder', (data) => {
         data.map((room) => {
             var newRoom = document.createElement("P");
-            newRoom.className = 'green-button room';
+            newRoom.className = 'button green-button room';
             newRoom.innerHTML = room.name;
             newRoom.addEventListener("click",()=>{socket.emit('joinRoom', room.name); $('#rooms').hide();});
             $('#rooms').append(newRoom);
@@ -45,8 +45,8 @@ $(function() {
     });
 
     //hien lai form dang nhap neu bo qua
-    $('#float-button').on('click', () => {
-        $('#signin').show();
+    $('#menu-signin').on('click', () => {
+        location.assign('http://localhost:3000/html/login.html');
     });
 
     //mac dinh an menu va input doi biet hieu

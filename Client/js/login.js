@@ -23,6 +23,7 @@ $(function() {
     $('#btn-skip').on('click', () => {
         $('#signin').hide();
         $('#float-button').show();
+        location.replace('http://localhost:3000/html/index.html');
     });
 
     var btnSwitch = $('#btn-switch-login');
