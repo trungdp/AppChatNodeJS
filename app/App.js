@@ -3,11 +3,11 @@ var express = require("express");
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
-var mongodb = require('./Database/MongoDB');
-var user = require('./Model/User');
-var message = require('./Model/Message');
+var mongodb = require('../Database/MongoDB');
+var user = require('../Model/User');
+var message = require('../Model/Message');
 var fs = require('fs');
-const Conversation = require("./Model/Conversation");
+const Conversation = require("../Model/Conversation");
 
 //Chỉ ra đường dẫn chứa css, js, images...
 app.use(express.static(path.join(__dirname, 'Client')));
