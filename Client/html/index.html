@@ -15,18 +15,23 @@
     <script src="../js/emojionearea.js"></script>
 </head>
 
-<body>
-    <div id="rooms-order">
+<body class="background">
+    <div class="background content" id="rooms-order">
         <h1 id="rooms-title">DANH SÁCH PHÒNG CHAT</h1>
         <div id="rooms"></div>
         <button class="button green-button" id="btn-add-room">+</button>
         <div id="create-room">
-            <script type="text/javascript">$('#create-room').hide();</script>
+            <script type="text/javascript">
+            $('#create-room').hide();
+            </script>
             <input type="text" name="new-room" id="ip-new-room" placeholder="Nhập tên phòng mới">
-            <button id="btn-confirm-create">Tạo</button>
+            <button class="button light-green-button" id="btn-confirm-create">Tạo</button>
         </div>
     </div>
-    <div id='content'>
+    <div class="background content" id="change-background">
+        <script type="text/javascript">$('#change-background').hide();</script>
+    </div>
+    <div class="content" id='content'>
         <div id="boxchat">
             <div class="menu-bar">
                 <h1 class="friend-name" id="friend-name">Bạn mới</h1>
@@ -35,6 +40,7 @@
                 <ul class="setting-menu" id="setting-menu">
                     <li id="menu-change-name">Đổi biệt hiệu</li>
                     <li id="menu-join-room">Chọn Phòng</li>
+                    <li id="menu-change-background">Đổi hình nền</li>
                     <li id="menu-signin">Đăng nhập</li>
                     <li id="menu-signout">Đăng xuất</li>
                     <li id="call"><a>Gọi</a></li>

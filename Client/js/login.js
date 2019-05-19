@@ -52,6 +52,14 @@ $(function() {
         }
     });
 
+    $('#note-link').on('click', ()=>{
+        if (title.text() === 'ĐĂNG NHẬP') {
+            console.log('forget password');
+        } else {
+            showSignin();
+        }
+    });
+
 
     var showSignin = () => {
         $('#password-confirm').hide();

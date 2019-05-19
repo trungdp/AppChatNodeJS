@@ -19,7 +19,7 @@ $(function() {
         $('#rooms').empty();
         data.map((room) => {
             var newRoom = document.createElement("P");
-            newRoom.className = 'button green-button room';
+            newRoom.className = 'button green-button room inset-shadow';
             newRoom.innerHTML = room.name;
             newRoom.addEventListener("click", () => {
                 //neu da co phong thi roi khoi phong truoc khi tham gia phong moi
@@ -52,7 +52,7 @@ $(function() {
         $('.emojionearea-editor').empty();
     });
 
-    $('input[type="file"]').change(function(file){
+    $('input[type="file"]').change(function(file) {
         sendFile(file);
     });
 
@@ -66,7 +66,7 @@ $(function() {
     });
 
     $(".emojionearea-editor").change(function() {
-        var text =  $(".emojionearea-editor").text();
+        var text = $(".emojionearea-editor").text();
         alert(text);
         if (keyCode == '13') {
             sendMessage();
@@ -89,14 +89,23 @@ $(function() {
     //chon menu item thay doi biet hieu
     $('#menu-change-name').on('click', () => {
         $('#ip-user-name').toggle(50);
+        $('#setting-menu').hide();
     });
-    $('#call').on('click', ()=>{
+    $('#menu-change-background').on('click', () => {
+        console.log('change-background');
+        initChangeBackgound();
+        $('#change-background').show();
+        $('#setting-menu').hide();
+    });
+    $('#call').on('click', () => {
         alert('call');
+        $('#setting-menu').hide();
     });
     //join room
     /*--------------------------------------------------*/
     $('#menu-join-room').on('click', () => {
         $('#rooms-order').show();
+        $('#setting-menu').hide();
     });
     /*--------------------------------------------------*/
     //nhan enter len input, doi biet hieu
@@ -116,9 +125,15 @@ $(function() {
         $('#create-room').toggle(30);
     });
     $('#btn-confirm-create').on('click', () => {
-        var newName = $('#ip-new-room').val();
-        socket.emit('createRoom', newName);
-        console.log(newName);
+        if ($('#ip-new-room').val() === "") {
+            alert("Bạn phải nhập tên phòng!")
+        } else {
+            var newName = $('#ip-new-room').val();
+            $('#ip-new-room').val("");
+            $('#create-room').hide();
+            socket.emit('createRoom', newName);
+            console.log(newName);
+        }
     });
 
     //**************************************************************************
@@ -185,6 +200,24 @@ $(function() {
     var joinRoom = (roomName) => {
         socket.emit('joinRoom', roomName);
     }
+    var initChangeBackgound = () => {
+        var listBackgrounds = ["../images/backgrounds/1.png", "../images/backgrounds/2.png", "../images/backgrounds/3.png", "../images/backgrounds/4.png", "../images/backgrounds/5.png"];
+        $('#change-background').empty();
+        listBackgrounds.map((bgSource) => {
+            var bg = document.createElement("IMG");
+            bg.className = 'inset-shadow';
+            bg.src = bgSource;
+            bg.addEventListener("click", () => {
+                setBackground(bgSource);
+                $('#change-background').hide();
+            });
+            $('#change-background').append(bg);
+        })
+
+    }
+    var setBackground = (source) => {
+        $(".background").css("background-image", "url(" + source + ")");
+    }
 
     function handleError(error) {
         if (error.name === 'ConstraintNotSatisfiedError') {
@@ -192,8 +225,8 @@ $(function() {
             errorMsg(`The resolution ${v.width.exact}x${v.height.exact} px is not supported by your device.`);
         } else if (error.name === 'PermissionDeniedError') {
             errorMsg('Permissions have not been granted to use your camera and ' +
-                        'microphone, you need to allow the page access to your devices in ' +
-                        'order for the demo to work.');
+                'microphone, you need to allow the page access to your devices in ' +
+                'order for the demo to work.');
         }
         errorMsg(`getUserMedia error: ${error.name}`, error);
     }
@@ -206,7 +239,7 @@ $(function() {
         }
     }
 
-    function init(e){
+    function init(e) {
         navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
         if (navigator.getUserMedia) {
