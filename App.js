@@ -58,4 +58,4 @@ var conversation = new Conversation(["abc","123"].sort());
 mongodb.findRoom(["abc","1234"],function(id){
     console.log(id);
 })
-server.listen(3000);
+server.listen(process.env.PORT || 3000);
