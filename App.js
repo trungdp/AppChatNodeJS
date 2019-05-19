@@ -18,7 +18,7 @@ let rooms = [{ name: "Phòng 1", userCount: 0 },
 var usernameCount = 0;
 //Tạo socket 
 app.get("/", function (req, res) {
-    res.sendFile(path.join(__dirname + '/Client/login.html'));
+    res.sendFile(path.join(__dirname + '/Client/html/login.html'));
 });
 io.on('connection', function (socket) {
     console.log('Connected');
