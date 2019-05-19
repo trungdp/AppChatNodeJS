@@ -1,5 +1,6 @@
 $(function() {
     var socket = io.connect('http://localhost:3000');
+    let user;
     $('#signin').ready( () => {
         showSignin();
     });
@@ -10,6 +11,8 @@ $(function() {
         } else {
             $('#signin').show();
         }
+        user = data;
+        console.log(user);
     });
 
     var action = (action) => {

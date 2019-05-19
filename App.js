@@ -21,7 +21,7 @@ io.on('connection', function(socket) {
     socket.on('signin', function(data) {
         mongodb.isValidateUser(data, function(result) {
             console.log(result);
-            socket.emit('signin', result.name != "");
+            socket.emit('signin', result);
             user = result;
         });
     });
@@ -32,7 +32,7 @@ io.on('connection', function(socket) {
         var roomName = data;
 
         socket.join("room-" + roomName);
-        console.log(socket.remoteAddress + " joined to " + roomName);
+        console.log(socket.request.connection.remoteAddress + " joined to " + roomName);
 
         socket.on('send', function(data) {
             console.log(data.name + ": " + data.object);

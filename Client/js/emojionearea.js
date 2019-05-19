@@ -138,7 +138,8 @@ document = window.document || {};
         }
     }
     function getEmojioneVersion() {
-        return window.emojioneVersion || '3.1.2';
+        console.log(window.emojioneVersion);
+        return window.emojioneVersion || '3.1.5';
     };
     function isObject(variable) {
         return typeof variable === 'object';
