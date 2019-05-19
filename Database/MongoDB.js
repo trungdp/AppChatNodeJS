@@ -1,9 +1,7 @@
 var MongoClient = require('mongodb').MongoClient;
-var mongoose = require('mongoose');
 var dbName = 'dlchat'
 var url = "mongodb://127.0.0.1/"+dbName;
 
-// var schemal = 
 
 module.exports = {
 	connect:function () {
@@ -11,10 +9,10 @@ module.exports = {
 			if (err) throw err;
 			console.log("Connected to " + dbName);
 			db.close();
-		})
+		});
 	},
 
-	createTable:function(tableName){
+	useTable:function(tableName){
 		MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 			if (err) throw err;
 			var dbo = db.db(dbName);
@@ -25,8 +23,10 @@ module.exports = {
 					console.log("Created collection" + tableName);
 					db.close();
 				});
+			} else {
+				console.log("Use collection " + tableName);
 			}
-		})
+		});
 	},
 
 	insert:function(obj,tableName){
@@ -51,30 +51,76 @@ module.exports = {
 		})
 	},
 
-	query:function(query,tableName){
-		MongoClient.connect(url, function(err, db) {
+	query:function(query,tableName,callback){
+		return MongoClient.connect(url,{ useNewUrlParser: true }, function(err, db) {
 			if (err) throw err;
-			var table = db.db(dbName).collection(tableName);
-			table.find(query).toArray(function(err, result) {
+			db.db(dbName).collection(tableName).find(query).toArray(function(err, queryResult) {
 				if (err) throw err;
-				console.log(result);
 				db.close();
+				return callback(queryResult)
+			});
+		});
+	},
+	
+	isValidateUser:function(query,callback){
+		return MongoClient.connect(url,{ useNewUrlParser: true }, function(err, db) {
+			if (err) throw err;
+			db.db(dbName).collection("User").find(query).toArray(function(err, result) {
+				if (err) throw err;
+				db.close();
+				return callback(result[0]) ;
 			});
 		});	
 	},
-	
-	isValidateUser:function(query){
-		MongoClient.connect(url, function(err, db) {
+
+	createRoom:function(obj, callback){
+		return MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 			if (err) throw err;
-			var table = db.db(dbName).collection("User");
-			var isValidateUser = false;
-			table.find(query).toArray(function(err, result) {
+			var table = db.db(dbName).collection("Conversation");
+
+			table.insertOne(obj, function(err, res) {
 				if (err) throw err;
-				console.log(result);
-				if (result.length != 0) {isValidateUser = true}
 				db.close();
+				return callback(res.ops[0]);
+			})
+		})
+	},
+
+	getRoomWithName:function(obj, callback){
+		return MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+			if (err) throw err;
+			var table = db.db(dbName).collection("Conversation");
+			table.find().toArray(function(err,res){
+				if(err) throw err;
+				var result = [];
+				for (var i = 0; i < res.length; i++) { 
+					if (res[i].usersID.includes(obj)){
+						result.push(res[i])
+					}				
+				}
+				return callback(result);
 			});
-			return isValidateUser;
-		});	
+		});
+	},
+
+	findRoom:function(obj, callback){
+		return MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+			if (err) throw err;
+			var table = db.db(dbName).collection("Conversation");
+			
+			table.find().toArray(function(err,res){
+				if(err) throw err;
+				var result = [];
+				for (var i = 0; i < res.length; i++) { 
+					const ids = res[i].usersID;
+					if ((ids.length === obj.length) && ids.sort().every(function(value, index) { 
+						return value === obj.sort()[index]
+					})) {
+						return callback(res[i]);
+					}			
+				}
+				return callback();
+			});
+		})
 	}
 };

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>DLChat</title>
+    <link rel="icon" href="../images/chat-logo.ico" sizes="16x16">
+    <link rel="stylesheet" type="text/css" href="../style/default.css">
+    <link rel="stylesheet" type="text/css" href="../style/login.css">
+    <link rel="stylesheet" type="text/css" href="../style/emojionearea.css">
+    <script src="../js/socket.io.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/chat.js"></script>
+    <script src="../js/login.js"></script>
+    <script src="../js/emojionearea.js"></script>
+</head>
+
+<body class="background">
+    <div class="background content" id="rooms-order">
+        <h1 id="rooms-title">DANH SÁCH PHÒNG CHAT</h1>
+        <div id="rooms"></div>
+        <button class="button green-button" id="btn-add-room">+</button>
+        <div id="create-room">
+            <script type="text/javascript">
+            $('#create-room').hide();
+            </script>
+            <input type="text" name="new-room" id="ip-new-room" placeholder="Nhập tên phòng mới">
+            <button class="button light-green-button" id="btn-confirm-create">Tạo</button>
+        </div>
+    </div>
+    <div class="background content" id="change-background">
+        <script type="text/javascript">$('#change-background').hide();</script>
+    </div>
+    <div class="content" id='content'>
+        <div id="boxchat">
+            <div class="menu-bar">
+                <h1 class="friend-name" id="friend-name">Bạn mới</h1>
+                <input class="input" id="ip-user-name" type="text" name="user-name" placeholder="Đổi biệt hiệu" style="float: left;">
+                <img class="icon setting-icon" id="setting-icon" src="../images/SetingIcon.png">
+                <ul class="setting-menu" id="setting-menu">
+                    <li id="menu-change-name">Đổi biệt hiệu</li>
+                    <li id="menu-join-room">Chọn Phòng</li>
+                    <li id="menu-change-background">Đổi hình nền</li>
+                    <li id="menu-signin">Đăng nhập</li>
+                    <li id="menu-signout">Đăng xuất</li>
+                    <li id="call"><a>Gọi</a></li>
+                </ul>
+            </div>
+            <div class="messages">
+                <ul id="messages"></ul>
+            </div>
+            <div class="bottom-input">
+                <input class="input" id="message-input" type="text" name="input" placeholder="Nhập tin nhắn...">
+                <label id="choose-file">
+                    <img class="icon" src="../images/Add-attachment-icon.png" alt="add file" title="add file">
+                    <input type="file" name="">
+                </label>
+                <label id="choose-image">
+                    <img class="icon" src="../images/add-image-icon.png" alt="add image" title="add image">
+                    <input type="file" name="" accept="image/png, image/jpeg">
+                </label>
+                </input>
+                <button class="button" id="btn-send">Gửi</button>
+            </div>
+        </div>
+        <div id="right-list">
+            <div class="input find-friend">
+                &#128269;<input class="input ip-find-friend" type="text" placeholder="search">
+            </div>
+            <ul class="list-friends">
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>
