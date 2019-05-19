@@ -2,12 +2,21 @@
 const $ = require('jquery');
 const emoji = require('emojionearea');
 require('jquery-textcomplete');
+
+
+
 $(function() {
     //**************************************************************************
     //Define
     //**************************************************************************
     var socket = io.connect('http://localhost:3000');
     let roomName;
+
+    $.get('index', (data)=>{
+        //alert(data);
+    },(data)=>{
+        alert(data.text);
+    })
     $("#message-input").emojioneArea({
         // container: "#message-input",       
     });

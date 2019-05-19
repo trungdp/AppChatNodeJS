@@ -23,8 +23,9 @@ app.get("/", function (req, res) {
     res.render("login");
 });
 app.get("/index", function (req, res) {
-    res.render("index");
-    console.log("index");
+    res.render("index",{text:"1234567890"});
+    //var name = req.url.query.name;
+    //console.log(name);
 });
 
 io.on('connection', function (socket) {
