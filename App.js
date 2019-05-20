@@ -1,8 +1,8 @@
 var path = require("path");
 var express = require("express");
 var app = express();
-var server = require('https').createServer(app);
-var io = require('socket.io')(server);
+// var server = require('https').createServer(app);
+var io = require('socket.io')(app);
 var mongodb = require('./Database/MongoDB');
 var user = require('./Model/User');
 var message = require('./Model/Message');
@@ -74,4 +74,4 @@ var conversation = new Conversation(["abc", "123"].sort());
 mongodb.findRoom(["abc", "1234"], function (id) {
     console.log(id);
 })
-server.listen(process.env.PORT || 443);
+app.listen(process.env.PORT || 443);
