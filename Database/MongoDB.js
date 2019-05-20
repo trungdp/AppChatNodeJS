@@ -1,6 +1,7 @@
 var MongoClient = require('mongodb').MongoClient;
+const Define = require('../src/define');
 var dbName = 'DLChat'
-var url = "mongodb+srv://trung:Trungtrs1998@dlchat-o6dwn.mongodb.net/test?retryWrites=true";
+var url = Define.url;
 
 
 module.exports = {

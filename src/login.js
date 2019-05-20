@@ -1,8 +1,8 @@
-// const io = require('socket.io');
+const host = require('./define').host;
 const $ = require('jquery');
 
 $(function() {
-    var socket = io.connect('http://localhost:3000');
+    var socket = io.connect(host);
     let user;
     $('#signin').ready( () => {
         showSignin();
@@ -29,7 +29,7 @@ $(function() {
     $('#btn-skip').on('click', () => {
         $('#signin').hide();
         $('#float-button').show();
-        location.assign('http://localhost:3000/index');
+        location.assign(host + 'index');
         console.log("http://localhost:3000/index");
     });
 
