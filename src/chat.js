@@ -1,6 +1,7 @@
 // const io = require('socket.io');
 const $ = require('jquery');
 const emoji = require('emojionearea');
+const host = require('./define').host;
 require('jquery-textcomplete');
 
 
@@ -9,14 +10,10 @@ $(function() {
     //**************************************************************************
     //Define
     //**************************************************************************
-    var socket = io.connect('https://dluchat.herokuapp.com/');
+    var socket = io.connect(host);
     let roomName;
 
-    $.get('index', (data)=>{
-        //alert(data);
-    },(data)=>{
-        alert(data.text);
-    })
+    
     $("#message-input").emojioneArea({
         // container: "#message-input",       
     });
@@ -89,7 +86,7 @@ $(function() {
 
     //hien lai form dang nhap neu bo qua
     $('#menu-signin').on('click', () => {
-        location.assign('https://dluchat.herokuapp.com/index');
+        location.assign( host + 'index');
     });
 
     //mac dinh an menu va input doi biet hieu

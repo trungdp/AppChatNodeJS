@@ -1,6 +1,7 @@
 var MongoClient = require('mongodb').MongoClient;
-var dbName = 'dlchat'
-var url = "mongodb+srv://trung:Trungtrs1998@dlchat-o6dwn.mongodb.net/test?retryWrites=true";
+const Define = require('../src/define');
+var dbName = 'DLChat'
+var url = Define.url;
 
 
 module.exports = {
@@ -103,11 +104,21 @@ module.exports = {
 		});
 	},
 
+	allRoom:function(callback){
+		return MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+			if (err) throw err;
+			var table = db.db(dbName).collection("Conversation");
+			table.find().toArray(function(err,res){
+				if(err) throw err;
+				return callback(res);
+			});
+		})
+	},
+
 	findRoom:function(obj, callback){
 		return MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 			if (err) throw err;
 			var table = db.db(dbName).collection("Conversation");
-			
 			table.find().toArray(function(err,res){
 				if(err) throw err;
 				var result = [];

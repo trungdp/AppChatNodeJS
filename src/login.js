@@ -1,8 +1,8 @@
-// const io = require('socket.io');
+const host = require('./define').host;
 const $ = require('jquery');
 
 $(function() {
-    var socket = io.connect('https://dluchat.herokuapp.com/');
+    var socket = io.connect(host);
     let user;
     $('#signin').ready( () => {
         showSignin();
@@ -29,8 +29,8 @@ $(function() {
     $('#btn-skip').on('click', () => {
         $('#signin').hide();
         $('#float-button').show();
-        location.assign('https://dluchat.herokuapp.com/index');
-        console.log("https://dluchat.herokuapp.com/index");
+        location.assign(host + 'index');
+        console.log("http://localhost:3000/index");
     });
 
     var btnSwitch = $('#btn-switch-login');

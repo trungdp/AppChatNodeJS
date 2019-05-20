@@ -23,7 +23,7 @@ app.get("/", function (req, res) {
     res.render("login");
 });
 app.get("/index", function (req, res) {
-    res.render("index",{text:"1234567890"});
+    res.render("index",{'text':"1234567890"});
     //var name = req.url.query.name;
     //console.log(name);
 });
@@ -69,9 +69,9 @@ io.on('connection', function (socket) {
 var roomOrder = (socket) => {
     socket.emit('roomOrder', rooms);
 }
-mongodb.useTable("Conversation");
+//mongodb.useTable("Conversation");
 var conversation = new Conversation(["abc", "123"].sort());
-mongodb.findRoom(["abc", "1234"], function (id) {
+mongodb.findRoom(["abc", "123"], function (id) {
     console.log(id);
 })
 server.listen(process.env.PORT || 443);
