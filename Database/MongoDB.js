@@ -1,6 +1,6 @@
 var MongoClient = require('mongodb').MongoClient;
 var dbName = 'dlchat'
-var url = "mongodb://127.0.0.1/"+dbName;
+var url = "mongodb+srv://trung:Trungtrs1998@dlchat-o6dwn.mongodb.net/test?retryWrites=true";
 
 
 module.exports = {
