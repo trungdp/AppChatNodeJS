@@ -61,9 +61,9 @@ io.on('connection', function (socket) {
 var roomOrder = (socket) => {
     socket.emit('roomOrder', rooms);
 }
-mongodb.useTable("Conversation");
+//mongodb.useTable("Conversation");
 var conversation = new Conversation(["abc", "123"].sort());
-mongodb.findRoom(["abc", "1234"], function (id) {
+mongodb.findRoom(["abc", "123"], function (id) {
     console.log(id);
 })
 server.listen(process.env.PORT || 3000);
