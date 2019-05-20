@@ -9,7 +9,7 @@ $(function() {
     //**************************************************************************
     //Define
     //**************************************************************************
-    var socket = io.connect('http://localhost:3000');
+    var socket = io.connect('https://dluchat.herokuapp.com/');
     let roomName;
 
     $.get('index', (data)=>{
@@ -89,7 +89,7 @@ $(function() {
 
     //hien lai form dang nhap neu bo qua
     $('#menu-signin').on('click', () => {
-        location.assign('http://localhost:3000/index');
+        location.assign('https://dluchat.herokuapp.com/index');
     });
 
     //mac dinh an menu va input doi biet hieu

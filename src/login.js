@@ -2,7 +2,7 @@
 const $ = require('jquery');
 
 $(function() {
-    var socket = io.connect('http://localhost:3000');
+    var socket = io.connect('https://dluchat.herokuapp.com/');
     let user;
     $('#signin').ready( () => {
         showSignin();
@@ -29,8 +29,8 @@ $(function() {
     $('#btn-skip').on('click', () => {
         $('#signin').hide();
         $('#float-button').show();
-        location.assign('http://localhost:3000/index');
-        console.log("http://localhost:3000/index");
+        location.assign('https://dluchat.herokuapp.com/index');
+        console.log("https://dluchat.herokuapp.com/index");
     });
 
     var btnSwitch = $('#btn-switch-login');
