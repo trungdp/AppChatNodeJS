@@ -1,28 +1,36 @@
 const host = require('./define').host;
 const $ = require('jquery');
 
-$(function() {
+$(function () {
     var socket = io.connect(host);
     let user;
     $('#signin').ready( () => {
         showSignin();
     });
     //Socket nhận data và append vào giao diện
-    socket.on("signin", function(data) {
-        if (data) {
-            $('#signin').hide();
-        } else {
-            $('#signin').show();
-        }
-        user = data;
-        console.log(user);
+    socket.on("signinError", function(errorMessage) {
+        alert(errorMessage);
     });
 
+    socket.on("signupError", function (errorMessage) {
+        alert(errorMessage);
+    });
+
+    socket.on("signinSuccess", function (obj) {
+        alert('Đăng nhập thành công!');
+        location.assign(host + 'index?name=' + obj.name);
+    });
+
+    socket.on("signupSuccess", function (obj) {
+        alert('Đăng ký thành công!');
+        $('#password').val("");
+        $('#user-name').val("");
+        showSignin();
+    });
+    
     var action = (action) => {
         var name = $('#user-name').val();
         var pass = $('#password').val();
-        $('#password').val("");
-        $('#user-name').val("");
         socket.emit(action, { name: name, pass: pass });
     }
 
@@ -49,21 +57,28 @@ $(function() {
     $('#btn-continue').on('click', () => {
         if (title.text() === 'ĐĂNG NHẬP') {
             console.log('signin buttton clicked');
-            action('signin');
+            if (checkEmptySignin() == null){
+                action('signin');
+            } else {
+                alert(checkEmptySignin());
+            }
         } else {
             console.log('signup buttton clicked');
-            action('signup');
+            if (checkEmptySignup() == null){
+                action('signup');
+            } else {
+                alert(checkEmptySignup());
+            }
         }
     });
 
-    $('#note-link').on('click', ()=>{
+    $('#note-link').on('click', () => {
         if (title.text() === 'ĐĂNG NHẬP') {
             console.log('forget password');
         } else {
             showSignin();
         }
     });
-
 
     var showSignin = () => {
         $('#password-confirm').hide();
@@ -80,5 +95,34 @@ $(function() {
         note.empty();
         note.append(signinNote);
         btnSwitch.text('Đăng nhập');
+    }
+
+    var checkEmptySignin = () => {
+        var name = $('#user-name').val();
+        var pass = $('#password').val();
+        if (name.trim() === "" || name == null){
+            return "Tên không được để trống";
+        } else if(pass.trim() === "" || pass == null){
+            return "Mật khẩu không được để trống";
+        } else {
+            return null;
+        }
+    }
+
+    var checkEmptySignup = () => {
+        var name = $('#user-name').val();
+        var pass = $('#password').val();
+        var confirm = $('#password-confirm').val();
+        if (name.trim() === "" || name == null){
+            return "Tên không được để trống";
+        } else if(pass.trim() === "" || pass == null){
+            return "Mật khẩu không được để trống";
+        } else if (confirm.trim() === "" || confirm == null){
+            return "Xác nhận mật khẩu không được để trống";
+        } else if (pass != confirm){
+            return "Xác nhận mật khẩu không trùng khớp";
+        } else {
+            return null;
+        }
     }
 });

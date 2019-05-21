@@ -12,11 +12,14 @@ $(function() {
     //**************************************************************************
     var socket = io.connect(host);
     let roomName;
-
+    let searchParams = new URLSearchParams(window.location.search)
+    if (searchParams.has('name')){
+        $("#ip-user-name").val(searchParams.get('name'));
+        $('#ip-user-name').toggle(50);
+        $('#rooms-order').hide();
+    }
     
-    $("#message-input").emojioneArea({
-        // container: "#message-input",       
-    });
+    $("#message-input").emojioneArea({ });
     const constraints = window.constraints = {
         audio: false,
         video: true

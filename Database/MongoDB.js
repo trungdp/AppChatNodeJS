@@ -73,6 +73,27 @@ module.exports = {
 			});
 		});	
 	},
+	hadName:function(name,callback){
+		return MongoClient.connect(url,{ useNewUrlParser: true }, function(err, db) {
+			if (err) throw err;
+			db.db(dbName).collection("User").find({name:name}).toArray(function(err, result) {
+				if (err) throw err;
+				db.close();
+				return callback(result.length > 0) ;
+			});
+		});	
+	},
+	addUser:function(obj,callback){
+		return MongoClient.connect(url,{ useNewUrlParser: true }, function(err, db) {
+			if (err) throw err;
+			var table = db.db(dbName).collection("User");
+			table.insertOne(obj, function(err, res) {
+				if (err) throw err;
+				db.close();
+				return callback(res.ops[0]);
+			})
+		});	
+	},
 
 	createRoom:function(obj, callback){
 		return MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
