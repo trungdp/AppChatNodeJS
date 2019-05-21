@@ -62,7 +62,7 @@ module.exports = {
 			});
 		});
 	},
-	
+
 	isValidateUser:function(query,callback){
 		return MongoClient.connect(url,{ useNewUrlParser: true }, function(err, db) {
 			if (err) throw err;
@@ -70,6 +70,32 @@ module.exports = {
 				if (err) throw err;
 				db.close();
 				return callback(result[0]) ;
+			});
+		});	
+	},
+	updateStatus:function(name,status,callback){
+		return MongoClient.connect(url,{ useNewUrlParser: true }, function(err, db) {
+			if (err) throw err;
+			db.db(dbName).collection("User").updateOne({name:name}, { $set: { status: status } }, function(err, res) {
+				if (err) throw err;
+				console.log("1 document updated");
+				db.close();
+				return callback(res) ;
+			  });
+		});	
+	},
+	getAllOnlineUser:function(callback){
+		return MongoClient.connect(url,{ useNewUrlParser: true }, function(err, db) {
+			if (err) throw err;
+			var table = db.db(dbName).collection("User");
+			table.find({status:"onl"}).toArray(function(err,res){
+				if(err) throw err;
+				console.log(res);
+				var result = [];
+				res.forEach((item)=>{
+					result.push(item.name);
+				})
+				return callback(result);
 			});
 		});	
 	},

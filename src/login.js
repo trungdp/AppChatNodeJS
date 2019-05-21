@@ -17,7 +17,6 @@ $(function () {
     });
 
     socket.on("signinSuccess", function (obj) {
-        alert('Đăng nhập thành công!');
         location.assign(host + 'index?name=' + obj.name);
     });
 
@@ -38,7 +37,6 @@ $(function () {
         $('#signin').hide();
         $('#float-button').show();
         location.assign(host + 'index');
-        console.log("http://localhost:3000/index");
     });
 
     var btnSwitch = $('#btn-switch-login');

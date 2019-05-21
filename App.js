@@ -33,10 +33,20 @@ io.on('connection', function (socket) {
         mongodb.isValidateUser({name: data.name, pass: data.pass}, function (result) {
             if(result){
                 socket.emit("signinSuccess",result);
+                socket.userName = data.name;
+                mongodb.updateStatus(data.name,require('./src/define').userStatus.ONLINE,(res)=>{
+                    sendOnlineUser();
+                })
             } else {
                 socket.emit('signinError', "Tên đăng nhập hoặc mật khẩu không đúng");
             }
         });
+    });
+
+    socket.on('disconnect', function (data) {
+        mongodb.updateStatus(socket.userName,require('./src/define').userStatus.OFFLINE,(res)=>{
+            sendOnlineUser();
+        })
     });
 
     socket.on('signup', function (data) {
@@ -81,6 +91,13 @@ io.on('connection', function (socket) {
 
 var roomOrder = (socket) => {
     socket.emit('roomOrder', rooms);
+}
+
+var sendOnlineUser = () => {
+    mongodb.getAllOnlineUser((listUserName)=>{
+        io.sockets.emit('onlineUser', listUserName);
+        console.log(listUserName);
+    });
 }
 //mongodb.useTable("Conversation");
 var conversation = new Conversation(["abc", "123"].sort());

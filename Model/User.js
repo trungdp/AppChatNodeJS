@@ -1,12 +1,9 @@
-const UserStatus = {
-    ONLINE: 'onl',
-    OFFLINE: 'off'
-}
+const userStatus = require('../src/define').userStatus;
 
 function User(name, pass, status) {     
     this.name = name || "";
     this.pass = pass  || "";
-    this.status = status || UserStatus.OFFLINE;
+    this.status = status || userStatus.OFFLINE;
 }
 
 User.prototype.getName = function(){

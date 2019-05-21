@@ -4,8 +4,6 @@ const emoji = require('emojionearea');
 const host = require('./define').host;
 require('jquery-textcomplete');
 
-
-
 $(function() {
     //**************************************************************************
     //Define
@@ -28,6 +26,14 @@ $(function() {
     //**************************************************************************
     //Socket event
     //**************************************************************************
+    socket.on('onlineUser',(listUserName=>{
+        console.log(listUserName);
+        $('.list-friends').html("");
+        listUserName.forEach((name)=>{
+            $('.list-friends').append('<div class="friendName">'+ name +'</div>');
+        });
+    }));
+
     socket.on('roomOrder', (data) => {
         $('#rooms').empty();
         data.map((room) => {

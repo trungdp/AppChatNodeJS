@@ -13,6 +13,14 @@ module.exports = {
 
     //***********************************************************************************
     //database connect string
-    url : "mongodb+srv://trung:Trungtrs1998@dlchat-o6dwn.mongodb.net/test?retryWrites=true"
+    url : "mongodb+srv://trung:Trungtrs1998@dlchat-o6dwn.mongodb.net/test?retryWrites=true",
+    //***********************************************************************************
+
+    //***********************************************************************************
+    //userStatus
+    userStatus : {
+        ONLINE: 'onl',
+        OFFLINE: 'off'
+    }
     //***********************************************************************************
 }
