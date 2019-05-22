@@ -13,7 +13,6 @@ $(function() {
     });
 
     var btnSwitch = $('#btn-switch-login');
-    var title = $('#h1-title');
     var note = $('#bottom-note');
 
     btnSwitch.on('click', () => {

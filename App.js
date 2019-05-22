@@ -24,7 +24,7 @@ app.get("/", function (req, res) {
 });
 
 io.on('connection', function (socket) {
-    console.log(socket.id + 'Connected');
+    console.log('socket '+socket.id + ' is connected');
 
     socket.on('signin', function (data) {
         mongodb.isValidateUser({name: data.name, pass: data.pass}, function (result) {
@@ -93,7 +93,7 @@ var roomOrder = (socket) => {
 var sendOnlineUser = () => {
     mongodb.getAllOnlineUser((listUserName)=>{
         io.sockets.emit('onlineUser', listUserName);
-        console.log(listUserName);
+        console.log("list onlinet user: "+listUserName);
     });
 }
 //mongodb.useTable("Conversation");

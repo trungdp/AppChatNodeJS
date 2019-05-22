@@ -78,7 +78,7 @@ module.exports = {
 			if (err) throw err;
 			db.db(dbName).collection("User").updateOne({name:name}, { $set: { status: status } }, function(err, res) {
 				if (err) throw err;
-				console.log("1 document updated");
+				console.log("update stauts:"+ res.name+": "+res.status);
 				db.close();
 				return callback(res) ;
 			  });

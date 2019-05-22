@@ -37,7 +37,7 @@ $(function() {
     });
 
     socket.on("signinSuccess", function(obj) {
-        location.assign(host + 'index?name=' + obj.name);
+        
     });
 
     socket.on("signupSuccess", function(obj) {
@@ -93,11 +93,14 @@ $(function() {
 
     //signin/signup
     //**************************************************************************
+    var title = $('#h1-title');
     $('#btn-continue').on('click', () => {
         if (title.text() === 'ĐĂNG NHẬP') {
             console.log('signin buttton clicked');
             if (checkEmptySignin() == null) {
                 action('signin');
+                $('#signin').hide();
+                $('#content').show();
             } else {
                 alert(checkEmptySignin());
             }
@@ -105,6 +108,8 @@ $(function() {
             console.log('signup buttton clicked');
             if (checkEmptySignup() == null) {
                 action('signup');
+                $('#signin').hide();
+                $('#content').show();
             } else {
                 alert(checkEmptySignup());
             }
@@ -204,9 +209,9 @@ $(function() {
     var checkEmptySignin = () => {
         var name = $('#user-name').val();
         var pass = $('#password').val();
-        if (name.trim() === "" || name == null){
+        if (name.trim() === "" || name == null) {
             return "Tên không được để trống";
-        } else if(pass.trim() === "" || pass == null){
+        } else if (pass.trim() === "" || pass == null) {
             return "Mật khẩu không được để trống";
         } else {
             return null;
@@ -217,13 +222,13 @@ $(function() {
         var name = $('#user-name').val();
         var pass = $('#password').val();
         var confirm = $('#password-confirm').val();
-        if (name.trim() === "" || name == null){
+        if (name.trim() === "" || name == null) {
             return "Tên không được để trống";
-        } else if(pass.trim() === "" || pass == null){
+        } else if (pass.trim() === "" || pass == null) {
             return "Mật khẩu không được để trống";
-        } else if (confirm.trim() === "" || confirm == null){
+        } else if (confirm.trim() === "" || confirm == null) {
             return "Xác nhận mật khẩu không được để trống";
-        } else if (pass != confirm){
+        } else if (pass != confirm) {
             return "Xác nhận mật khẩu không trùng khớp";
         } else {
             return null;
