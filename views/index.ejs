@@ -16,6 +16,20 @@
 </head>
 
 <body class="background">
+    <div id="signin">
+        <button class="button green-button" id="btn-switch-login">Đăng ký</button>
+        <img class="logo" src="../images/chat-logo.ico" title="logo" alt="logo">
+        <div class="signin-title" id="signin-title">
+            <h1 id="h1-title">ĐĂNG NHẬP</h1>
+            <p>Chat miễn phí với nhiều tính năng hơn</p>
+        </div>
+        <input type="text" name="user-name" id="user-name" placeholder="Tên tài khoản" /><br>
+        <input type="password" name="password" id="password" placeholder="Mật khẩu" /><br>
+        <input type="password" name="password-confirm" id="password-confirm" placeholder="Xác nhận mật khẩu" /><br>
+        <button class="button" id="btn-continue">Tiếp tục</button>
+        <button class="button" id="btn-skip">Bỏ qua</button><br>
+        <p id="bottom-note"><a id="note-link" href="#">Quên mật khẩu?</a></p>
+    </div>
     <div class="background content" id="rooms-order">
         <h1 id="rooms-title">DANH SÁCH PHÒNG CHAT</h1>
         <div id="rooms"></div>
@@ -27,9 +41,14 @@
             <input type="text" name="new-room" id="ip-new-room" placeholder="Nhập tên phòng mới">
             <button class="button light-green-button" id="btn-confirm-create">Tạo</button>
         </div>
+        <script type="text/javascript">
+        $('#rooms-order').hide();
+        </script>
     </div>
     <div class="background content" id="change-background">
-        <script type="text/javascript">$('#change-background').hide();</script>
+        <script type="text/javascript">
+        $('#change-background').hide();
+        </script>
     </div>
     <div class="content" id='content'>
         <div id="boxchat">
@@ -70,6 +89,9 @@
             <ul class="list-friends">
             </ul>
         </div>
+        <script type="text/javascript">
+        $('#content').hide();
+        </script>
     </div>
 </body>
 <script src="../js/chat-bundle.js"></script>

@@ -31,14 +31,11 @@ let rooms = [{
 var usernameCount = 0;
 //Tạo socket 
 app.get("/", function (req, res) {
-    res.render("login");
-});
-app.get("/index", function (req, res) {
     res.render("index");
 });
 
 io.on('connection', function (socket) {
-    console.log('Connected');
+    console.log('socket '+socket.id + ' is connected');
 
     socket.on('joinWith', function (name) {
         socket.userName = name;
