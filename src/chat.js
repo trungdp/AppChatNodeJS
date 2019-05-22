@@ -168,10 +168,7 @@ $(function() {
         $('#change-background').show();
         $('#setting-menu').hide();
     });
-    $('#call').on('click', () => {
-        alert('call');
-        $('#setting-menu').hide();
-    });
+    
     //join room
     /*--------------------------------------------------*/
     $('#menu-join-room').on('click', () => {
@@ -320,4 +317,46 @@ $(function() {
         $(".background").css("background-image", "url(" + source + ")");
     }
 });
-//module.exports = socket;
+
+function openStream() {
+    const config = { audio: false, video: true };
+    return navigator.mediaDevices.getUserMedia(config);
+}
+
+function playStream(idVideoTag, stream) {
+    const video = document.getElementById(idVideoTag);
+    video.srcObject = stream;
+    video.play();
+}
+
+socket.on('callVideo',()=>{
+    socket.emit('answerID',socket.peerID);
+});
+socket.on('answerID',(id)=>{
+    openStream()
+    .then( stream=>{
+        playStream('my-video',stream);
+        const call = peer.call(id,stream);
+        call.on('stream',remoteStream => playStream('friend-video',remoteStream));
+    });
+});
+// openStream().then(stream=>playStream('my-video',stream));
+
+var peer = new Peer({key:'lwjd5qra8257b9'});
+
+peer.on('open',(id)=>{
+    socket.peerID = id;
+    socket.emit("sendPeerID",id);
+});
+
+$('#call').on('click', () => {
+    socket.emit('callVideo');
+});
+peer.on('call',call=>{
+    openStream()
+    .then(stream=>{
+        call.answer(stream);
+        playStream('my-video');
+        call.on('stream',remoteStream=>playStream('friend-video',remoteStream));
+    });
+});

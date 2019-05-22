@@ -78,6 +78,10 @@ io.on('connection', function (socket) {
 
     //room handle---------------------------------------------
     roomOrder(socket);
+    socket.on('sendPeerID', id => {
+        socket.peerID = id
+        console.log("peerID "+socket.peerID);
+    });
     socket.on('joinRoom', (data) => {
         var roomName = data;
         
@@ -88,8 +92,11 @@ io.on('connection', function (socket) {
             io.sockets.in("room-" + roomName).emit('send', data);
         });
 
-        socket.on('callOrder', function (orderToken) {
-            socket.to("room-" + roomName).emit("receiveOrderToken",orderToken);
+        socket.on('callVideo', function () {
+            socket.to('room-'+roomName).emit('callVideo');
+        });
+        socket.on('answerID', function (id) {
+            socket.to('room-'+roomName).emit('answerID',id);
         });
     });
     socket.on('leaveRoom', (data) => {
