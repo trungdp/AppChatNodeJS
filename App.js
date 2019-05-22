@@ -20,14 +20,11 @@ let rooms = [{ name: "Phòng 1", userCount: 0 },
 var usernameCount = 0;
 //Tạo socket 
 app.get("/", function (req, res) {
-    res.render("login");
-});
-app.get("/index", function (req, res) {
     res.render("index");
 });
 
 io.on('connection', function (socket) {
-    console.log('Connected');
+    console.log(socket.id + 'Connected');
 
     socket.on('signin', function (data) {
         mongodb.isValidateUser({name: data.name, pass: data.pass}, function (result) {
