@@ -116,5 +116,4 @@ io.on('connection', function (socket) {
 var roomOrder = (socket) => {
     socket.emit('roomOrder', rooms);
 }
-
 server.listen(process.env.PORT || 3000);

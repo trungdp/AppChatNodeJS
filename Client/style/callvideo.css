@@ -1,0 +1,23 @@
+#callvideo {
+    align-items: center;
+    width: 100%;
+    top: 10%;
+    margin-top:5%;
+}
+
+#my-video {
+    background: #726b54;
+    width: 25%;
+    align-items: flex-end;
+    position: absolute;
+    height: auto;
+    right: 10%;
+    bottom: 13.5%;
+}
+
+#friend-video{
+    background: #53627a;
+    width: 80%;
+    height: 80%;
+    margin-left: 10%;
+}

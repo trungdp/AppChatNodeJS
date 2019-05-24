@@ -7,6 +7,7 @@
     <link rel="icon" href="../images/chat-logo.ico" sizes="16x16">
     <link rel="stylesheet" type="text/css" href="../style/default.css">
     <link rel="stylesheet" type="text/css" href="../style/login.css">
+    <link rel="stylesheet" type="text/css" href="../style/callvideo.css">
     <link rel="stylesheet" type="text/css" href="../style/emojionearea.css">
     <script src="https://cdn.jsdelivr.net/npm/peerjs@0.3.20/dist/peer.min.js"></script>
     <script src="../js/socket.io.js"></script>
@@ -45,6 +46,11 @@
         <script type="text/javascript">
         $('#rooms-order').hide();
         </script>
+    </div>
+    <div id="callvideo" style="display: none">
+        <div><video id="friend-video" > </video></div>
+        
+        <div><video id="my-video" ></video></div>
     </div>
     <div class="background content" id="change-background">
         <script type="text/javascript">
@@ -94,12 +100,7 @@
         $('#content').hide();
         </script>
     </div>
-    <div id="callvideo">
-            <!-- --tkv5g2acaree9udi -->
-        <video id="friend-video" width="700px"></video>
-        <br>
-        <video id="my-video" width="200px"></video>
-    </div>
+    
 </body>
 <script src="../js/chat-bundle.js"></script>
 <script src="../js/login-bundle.js"></script>

@@ -319,7 +319,7 @@ $(function() {
 });
 
 function openStream() {
-    const config = { audio: false, video: true };
+    const config = { audio: true, video: true };
     return navigator.mediaDevices.getUserMedia(config);
 }
 
@@ -335,12 +335,13 @@ socket.on('callVideo',()=>{
 socket.on('answerID',(id)=>{
     openStream()
     .then( stream=>{
+        $('#callvideo').show();
+        $('#content').hide();
         playStream('my-video',stream);
         const call = peer.call(id,stream);
         call.on('stream',remoteStream => playStream('friend-video',remoteStream));
     });
 });
-// openStream().then(stream=>playStream('my-video',stream));
 
 var peer = new Peer({key:'lwjd5qra8257b9'});
 
@@ -352,11 +353,14 @@ peer.on('open',(id)=>{
 $('#call').on('click', () => {
     socket.emit('callVideo');
 });
+
 peer.on('call',call=>{
     openStream()
     .then(stream=>{
         call.answer(stream);
-        playStream('my-video');
+        $('#callvideo').show();
+        $('#content').hide();
+        playStream('my-video',stream);
         call.on('stream',remoteStream=>playStream('friend-video',remoteStream));
     });
 });

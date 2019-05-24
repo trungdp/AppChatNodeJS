@@ -141,6 +141,7 @@ module.exports = {
 			table.find().toArray(function(err,res){
 				if(err) throw err;
 				var result = [];
+				console.log(res);
 				for (var i = 0; i < res.length; i++) { 
 					if (res[i].usersID.includes(obj)){
 						result.push(res[i])
