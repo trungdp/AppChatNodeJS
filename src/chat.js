@@ -69,6 +69,12 @@ $(function() {
 
 
     var selectChatPage = (user) => {
+        if(!(user.id)){
+            var page = $('<ul class="message-page" id="' + user.name + '"></ul>');
+            page.appendTo('.messages');
+            $('#friend-name').text(user.name);
+            return;
+        }
         var allPages = document.getElementsByClassName('message-page');
         for (i = 0; i < allPages.length; i++) {
             allPages[i].style.display = "none";
@@ -348,7 +354,7 @@ $(function() {
 });
 
 function openStream() {
-    const config = { audio: false, video: true };
+    const config = { audio: true, video: true };
     return navigator.mediaDevices.getUserMedia(config);
 }
 

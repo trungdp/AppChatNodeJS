@@ -1,5 +1,6 @@
 const host = require('./define').host;
 const $ = require('jquery');
+const uid = require('uid');
 
 $(function() {
     $('#signin').ready(() => {
@@ -10,6 +11,7 @@ $(function() {
     $('#btn-skip').on('click', () => {
         $('#signin').hide();
         $('#rooms-order').show();
+        $("#ip-user-name").val(uid(5));
     });
 
     var btnSwitch = $('#btn-switch-login');

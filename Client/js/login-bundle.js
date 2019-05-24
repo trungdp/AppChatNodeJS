@@ -97,6 +97,17 @@ eval("var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!\n * jQ
 
 /***/ }),
 
+/***/ "./node_modules/uid/index.js":
+/*!***********************************!*\
+  !*** ./node_modules/uid/index.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("/**\n * Export `uid`\n */\n\nmodule.exports = uid;\n\n/**\n * Create a `uid`\n *\n * @param {String} len\n * @return {String} uid\n */\n\nfunction uid(len) {\n  len = len || 7;\n  return Math.random().toString(35).substr(2, len);\n}\n\n\n//# sourceURL=webpack:///./node_modules/uid/index.js?");
+
+/***/ }),
+
 /***/ "./src/define.js":
 /*!***********************!*\
   !*** ./src/define.js ***!
@@ -115,7 +126,7 @@ eval("module.exports = {\n    //************************************************
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const host = __webpack_require__(/*! ./define */ \"./src/define.js\").host;\nconst $ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\");\n\n$(function() {\n    $('#signin').ready(() => {\n        showSignin();\n    });\n    //Socket nhận data và append vào giao diện\n\n    $('#btn-skip').on('click', () => {\n        $('#signin').hide();\n        $('#rooms-order').show();\n    });\n\n    var btnSwitch = $('#btn-switch-login');\n    var note = $('#bottom-note');\n\n    btnSwitch.on('click', () => {\n        console.log('btn switch');\n        if (btnSwitch.text() === 'Đăng nhập') {\n            showSignin();\n        } else {\n            showSignUp();\n        }\n    });\n    var title = $('#h1-title');\n    $('#note-link').on('click', () => {\n        if ($('#h1-title').text() === 'ĐĂNG NHẬP') {\n            console.log('forget password');\n        } else {\n            showSignin();\n        }\n    });\n\n    var showSignin = () => {\n        $('#password-confirm').hide();\n        var signinNote = \"<p id='bottom-note'><a id='note-link' href='#''>Quên mật khẩu?</a></p>\"\n        title.text('ĐĂNG NHẬP');\n        note.empty();\n        note.append(signinNote);\n        btnSwitch.text('Đăng ký');\n    }\n    var showSignUp = () => {\n        $('#password-confirm').show();\n        var signinNote = \"<p id='bottom-note'><a id='note-link' href='#''>Đăng nhập</a> nếu bạn đã là thành viên của DLChat</p>\"\n        title.text('ĐĂNG KÝ');\n        note.empty();\n        note.append(signinNote);\n        btnSwitch.text('Đăng nhập');\n    }\n\n\n});\n\n//# sourceURL=webpack:///./src/login.js?");
+eval("const host = __webpack_require__(/*! ./define */ \"./src/define.js\").host;\nconst $ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\");\nconst uid = __webpack_require__(/*! uid */ \"./node_modules/uid/index.js\");\n\n$(function() {\n    $('#signin').ready(() => {\n        showSignin();\n    });\n    //Socket nhận data và append vào giao diện\n\n    $('#btn-skip').on('click', () => {\n        $('#signin').hide();\n        $('#rooms-order').show();\n        $(\"#ip-user-name\").val(uid(5));\n    });\n\n    var btnSwitch = $('#btn-switch-login');\n    var note = $('#bottom-note');\n\n    btnSwitch.on('click', () => {\n        console.log('btn switch');\n        if (btnSwitch.text() === 'Đăng nhập') {\n            showSignin();\n        } else {\n            showSignUp();\n        }\n    });\n    var title = $('#h1-title');\n    $('#note-link').on('click', () => {\n        if ($('#h1-title').text() === 'ĐĂNG NHẬP') {\n            console.log('forget password');\n        } else {\n            showSignin();\n        }\n    });\n\n    var showSignin = () => {\n        $('#password-confirm').hide();\n        var signinNote = \"<p id='bottom-note'><a id='note-link' href='#''>Quên mật khẩu?</a></p>\"\n        title.text('ĐĂNG NHẬP');\n        note.empty();\n        note.append(signinNote);\n        btnSwitch.text('Đăng ký');\n    }\n    var showSignUp = () => {\n        $('#password-confirm').show();\n        var signinNote = \"<p id='bottom-note'><a id='note-link' href='#''>Đăng nhập</a> nếu bạn đã là thành viên của DLChat</p>\"\n        title.text('ĐĂNG KÝ');\n        note.empty();\n        note.append(signinNote);\n        btnSwitch.text('Đăng nhập');\n    }\n\n\n});\n\n//# sourceURL=webpack:///./src/login.js?");
 
 /***/ })
 
