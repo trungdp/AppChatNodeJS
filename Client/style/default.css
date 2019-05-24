@@ -303,7 +303,7 @@ input[type="file"] {
     border: green solid 2px;
     color: green;
     float: right;
-    margin: 5px;
+    margin: 5px 0px;
 }
 
 #boxchat .bottom-input #btn-send:hover {

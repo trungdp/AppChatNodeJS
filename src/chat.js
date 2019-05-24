@@ -3,7 +3,7 @@ const $ = require('jquery');
 const emoji = require('emojionearea');
 const host = require('./define').host;
 require('jquery-textcomplete');
-var socket = io.connect(host,{transports: ['websocket']});
+var socket = io.connect(host, { transports: ['websocket'] });
 
 $(function() {
     //**************************************************************************
@@ -58,25 +58,14 @@ $(function() {
         listUser.forEach((user) => {
             var button = document.createElement("button");
             button.innerHTML = user.name;
+            if (user.name === $("#ip-user-name").val()) {
+                button.style.background = 'gray';
+                button.disable = true;
+            }
             console.log('online: ' + user.id + user.name);
             button.className = 'online-users';
             button.addEventListener("click", () => {
-                    if (findReadyRoomByIDFriend(user.id)) {
-                        // $('.message-page').empty();
-                        // var convers = findReadyRoomByIDFriend(user.id);
-                        // convers.messages.forEach((message) => {
-                        //     convertMessage(message.sender, message.data);
-                        // });
-                        // button.innerHTML = user.name;
-                        selectChatPage(user);
-                    } else {
-                        socket.emit('getConversation', user.id);
-                        console.log('getConversation is emitted: ' + user.id);
-                        socket.on('resConversation', (data) => {
-                            readyRooms.push({ idFriend: user.id, conversation: data });
-                            selectChatPage(user);
-                        })
-                    }
+                selectChatPage(user);
             });
             $('.list-friends').append(button);
         });
@@ -84,19 +73,22 @@ $(function() {
 
 
     var selectChatPage = (user) => {
-        $('#friend-name').val(user.name);
         var allPages = document.getElementsByClassName('message-page');
         for (i = 0; i < allPages.length; i++) {
             allPages[i].style.display = "none";
         }
-        if (document.getElementById(user.name)){
-            alert(user.name);
+        if (document.getElementById(user.name)) {
+            $('#friend-name').text(user.name);
         } else {
-            var page = $('<ul class="message-page" id="'+user.name+'"></ul>');
-            page.appendTo('.messages');
-            alert('append');
+            socket.emit('getConversation', user.id);
+            console.log('getConversation is emitted: ' + user.id);
+            socket.on('resConversation', (data) => {
+                var page = $('<ul class="message-page" id="' + user.name + '"></ul>');
+                page.appendTo('.messages');
+                $('#friend-name').text(user.name);
+            });
         }
-        $('#'+user.name).display = "block";
+        $('#' + user.name).show();
     }
 
     //chat event
@@ -242,6 +234,8 @@ $(function() {
         }
     });
 
+
+
     //**************************************************************************
     //Hàm xử lý
     //**************************************************************************
@@ -287,7 +281,7 @@ $(function() {
             }
         }
     }
-    
+
     var convertMessage = (who, data) => {
         const validImageTypes = ["image/gif", "image/jpeg", "image/png", "image/ico"];
         if (data.type === "text") {
@@ -325,8 +319,12 @@ $(function() {
         const sendTime = new Date().getHours();
         Array.from(file.target.files).forEach((item) => {
             const fileType = item.type;
-            socket.emit('send', { username: username, type: fileType,
-                                    sendTime: sendTime, object: item });
+            socket.emit('send', {
+                username: username,
+                type: fileType,
+                sendTime: sendTime,
+                object: item
+            });
         })
     }
 
@@ -363,7 +361,7 @@ $(function() {
 });
 
 function openStream() {
-    const config = { audio: true, video: true };
+    const config = { audio: false, video: true };
     return navigator.mediaDevices.getUserMedia(config);
 }
 
@@ -378,13 +376,20 @@ socket.on('callVideo', () => {
 });
 socket.on('answerID', (id) => {
     openStream()
-    .then( stream=>{
-        $('#callvideo').show();
-        $('#content').hide();
-        playStream('my-video',stream);
-        const call = peer.call(id,stream);
-        call.on('stream',remoteStream => playStream('friend-video',remoteStream));
-    });
+        .then(stream => {
+            $('#callvideo').show();
+            $('#content').hide();
+            playStream('my-video', stream);
+            const call = peer.call(id, stream);
+            call.on('stream', remoteStream => playStream('friend-video', remoteStream));
+            $('#close-video').on('click', () => {
+                $('#friend-video').stop();
+                $('#my-video').stop();
+                $('#callvideo').hide();
+                $('#content').show();
+                call.emit('disconnect');
+            });
+        });
 });
 
 var peer = new Peer({ key: 'lwjd5qra8257b9' });
@@ -398,13 +403,20 @@ $('#call').on('click', () => {
     socket.emit('callVideo');
 });
 
-peer.on('call',call=>{
+peer.on('call', call => {
     openStream()
-    .then(stream=>{
-        call.answer(stream);
-        $('#callvideo').show();
-        $('#content').hide();
-        playStream('my-video',stream);
-        call.on('stream',remoteStream=>playStream('friend-video',remoteStream));
-    });
+        .then(stream => {
+            call.answer(stream);
+            $('#callvideo').show();
+            $('#content').hide();
+            playStream('my-video', stream);
+            call.on('stream', remoteStream => playStream('friend-video', remoteStream));
+            $('#close-video').on('click', () => {
+                $('#friend-video').stop();
+                $('#my-video').stop();
+                $('#callvideo').hide();
+                $('#content').show();
+                call.emit('disconnect');
+            });
+        });
 });
