@@ -10,6 +10,9 @@ $(function() {
     //Define
     //**************************************************************************
     let roomName;
+    let readyRooms = [];
+
+
     let searchParams = new URLSearchParams(window.location.search)
     if (searchParams.has('name')) {
         $("#ip-user-name").val(searchParams.get('name'));
@@ -37,7 +40,7 @@ $(function() {
     });
 
     socket.on("signinSuccess", function(obj) {
-        
+        $('')
     });
 
     socket.on("signupSuccess", function(obj) {
@@ -51,10 +54,29 @@ $(function() {
         console.log(listUserName);
         $('.list-friends').html("");
         listUserName.forEach((name) => {
-            $('.list-friends').append('<div class="friendName">' + name + '</div>');
+            var user = document.createElement("P");
+            user.innerHTML = name.name;
+            console.log('online: ' + name.id + name.name);
+            user.className = 'online-users';
+            user.addEventListener("click", () => {
+                if (findReadyRoomByIDFriend(name.id)) {
+                    $('#messages').empty();
+                    var convers = findReadyRoomByIDFriend(name.id);
+                    conver.messages.forEach((message) => {
+                        convertMessage(message.sender, message.data);
+                    });
+                    user.innerHTML = name.name;
+                } else {
+                    socket.emit('getConversation', name.id);
+                    console.log('getConversation is emitted: ' + name.id);
+                    socket.on('resConversation', (data) => {
+                        readyRooms.push({ idFriend: name.id, conversation: data });
+                    })
+                }
+            });
+            $('.list-friends').append(user);
         });
     }));
-
     //chat event
     //***************************************************************************
     socket.on('roomOrder', (data) => {
@@ -93,9 +115,9 @@ $(function() {
 
     //signin/signup
     //**************************************************************************
-    var title = $('#h1-title');
+
     $('#btn-continue').on('click', () => {
-        if (title.text() === 'ĐĂNG NHẬP') {
+        if ($('#h1-title').text() === 'ĐĂNG NHẬP') {
             console.log('signin buttton clicked');
             if (checkEmptySignin() == null) {
                 action('signin');
@@ -168,7 +190,7 @@ $(function() {
         $('#change-background').show();
         $('#setting-menu').hide();
     });
-    
+
     //join room
     /*--------------------------------------------------*/
     $('#menu-join-room').on('click', () => {
@@ -238,6 +260,13 @@ $(function() {
         socket.emit(action, { name: name, pass: pass });
     }
 
+    var findReadyRoomByIDFriend = (idFriend) => {
+        for (i = 0; i < readyRooms.length; i++) {
+            if (readyRooms[i].idFriend == idFriend) {
+                return readyRooms[i].conversation;
+            }
+        }
+    }
     var convertMessage = (who, data) => {
         const validImageTypes = ["image/gif", "image/jpeg", "image/png", "image/ico"];
         if (data.type === "text") {
@@ -329,10 +358,10 @@ function playStream(idVideoTag, stream) {
     video.play();
 }
 
-socket.on('callVideo',()=>{
-    socket.emit('answerID',socket.peerID);
+socket.on('callVideo', () => {
+    socket.emit('answerID', socket.peerID);
 });
-socket.on('answerID',(id)=>{
+socket.on('answerID', (id) => {
     openStream()
     .then( stream=>{
         $('#callvideo').show();
@@ -343,11 +372,11 @@ socket.on('answerID',(id)=>{
     });
 });
 
-var peer = new Peer({key:'lwjd5qra8257b9'});
+var peer = new Peer({ key: 'lwjd5qra8257b9' });
 
-peer.on('open',(id)=>{
+peer.on('open', (id) => {
     socket.peerID = id;
-    socket.emit("sendPeerID",id);
+    socket.emit("sendPeerID", id);
 });
 
 $('#call').on('click', () => {

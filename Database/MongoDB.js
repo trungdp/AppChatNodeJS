@@ -93,7 +93,7 @@ module.exports = {
 				console.log(res);
 				var result = [];
 				res.forEach((item)=>{
-					result.push(item.name);
+					result.push({id: item._id, name: item.name});
 				})
 				return callback(result);
 			});

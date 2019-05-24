@@ -23,9 +23,9 @@ $(function() {
             showSignUp();
         }
     });
-
+    var title = $('#h1-title');
     $('#note-link').on('click', () => {
-        if (title.text() === 'ĐĂNG NHẬP') {
+        if ($('#h1-title').text() === 'ĐĂNG NHẬP') {
             console.log('forget password');
         } else {
             showSignin();
