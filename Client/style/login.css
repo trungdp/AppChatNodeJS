@@ -1,76 +1,93 @@
-*{
-	box-sizing: border-box;
-}
-body{
-}
-#signin p{
-	color: #000;
-	display: block; 
-	width: 100%;
-}
-#signin a{
-	color: green;
-}
-#signin{
-	border-radius: 5px;
-	margin: 50px auto;
-	padding: 20px 0;
-	width: 25%;
-	background: rgba(235, 255, 210, 1);
-}
-#signin .logo{
-	width: 50px;
-	height: 50px;
-	margin-left: 150px;
-	margin-top: 20px;
-}
-#btn-switch-login{
-	width: 80px;
-	height: 50px;
-	z-index: 1;
-	position: absolute;
-	top: 30px;
-	right: 475px;
-}
-#signin .signin-title{
-	margin: 0;
-	text-align: center;
-	width: 100%;
-}
-#signin .h1{
-	font-size: 5em;
+* {
+    box-sizing: border-box;
 }
 
-#user-name , #password, #password-confirm{
-	width: 70%;
-	height: 40px;
-	margin: 3px 60px;
-	padding: 5px;
+body {}
+
+#signin p {
+    color: #000;
+    display: block;
+    width: 100%;
 }
-#btn-continue , #btn-skip{
-	float: left;
-	display: block;
-	margin-top: 20px;
-	margin-bottom: 20px;
-	width: 40%;
-	height: 40px;
-	color: green;
-	border: solid green 2px;
-	background: rgba(235, 255, 210, 1);
-	padding: 10px 35px;
+
+#signin a {
+    color: green;
 }
-#btn-continue:hover , #btn-skip:hover{
-	background-color: green;
-	color: #fff;
-	transition: 0.25s linear;
+
+#signin {
+    border-radius: 5px;
+    border: #000 solid 3px;
+    margin: 50px auto;
+    padding: 20px 0;
+    width: 25%;
+    background: rgba(235, 255, 210, 1);
 }
-#btn-continue{
-	margin-left: 30px;
+
+#signin .logo {
+    width: 50px;
+    height: 50px;
+    margin-left: 150px;
+    margin-top: 20px;
 }
-#btn-skip{
-	margin-left: 10px;
+
+#btn-switch-login {
+    width: 80px;
+    height: 50px;
+    z-index: 1;
+    position: absolute;
+    top: 30px;
+    right: 475px;
 }
-#bottom-note{
-	margin-top: 20px;
-	padding-left: 30px; 
+
+#signin .signin-title {
+    margin: 0;
+    text-align: center;
+    width: 100%;
+}
+
+#signin .h1 {
+    font-size: 5em;
+}
+
+#user-name,
+#password,
+#password-confirm {
+    width: 70%;
+    height: 40px;
+    margin: 3px 60px;
+    padding: 5px;
+}
+
+#btn-continue,
+#btn-skip {
+    float: left;
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 40%;
+    height: 40px;
+    color: green;
+    border: solid green 2px;
+    background: rgba(235, 255, 210, 1);
+    padding: 10px 35px;
+}
+
+#btn-continue:hover,
+#btn-skip:hover {
+    background-color: green;
+    color: #fff;
+    transition: 0.25s linear;
+}
+
+#btn-continue {
+    margin-left: 30px;
+}
+
+#btn-skip {
+    margin-left: 10px;
+}
+
+#bottom-note {
+    margin-top: 20px;
+    padding-left: 30px;
 }
