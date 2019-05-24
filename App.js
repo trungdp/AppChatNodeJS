@@ -25,6 +25,8 @@ app.get("/", function(req, res) {
     res.render("index");
 });
 
+io.set('transports', ['websocket']);
+
 io.on('connection', function(socket) {
     console.log('socket ' + socket.id + ' is connected');
 
@@ -58,10 +60,11 @@ io.on('connection', function(socket) {
     });
 
     socket.on('disconnect', function() {
-        if (socket.userName) {
-            onlineUsers.splice(onlineUsers.indexOf(socket.userName), 1);
+        if (socket.userName){
+            mongodb.updateStatus(socket.userName, require('./src/define').userStatus.OFFLINE, (res) => {
+                sendOnlineUser();
+            })
         }
-        socket.broadcast.emit('onlineUser', onlineUsers);
     });
 
     //room handle---------------------------------------------
@@ -117,7 +120,7 @@ var joinRoom = (socket, data) => {
     console.log(socket.request.connection.remoteAddress + " joined to " + roomName);
 
     socket.on('send', function(data) {
-        console.log(data.name + ": " + data.object);
+        console.log(data.username + ": " + data.object);
         io.sockets.in("room-" + roomName).emit('send', data);
     });
 

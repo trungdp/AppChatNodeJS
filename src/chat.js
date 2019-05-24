@@ -3,7 +3,7 @@ const $ = require('jquery');
 const emoji = require('emojionearea');
 const host = require('./define').host;
 require('jquery-textcomplete');
-var socket = io.connect(host);
+var socket = io.connect(host,{transports: ['websocket']});
 
 $(function() {
     //**************************************************************************
@@ -40,7 +40,9 @@ $(function() {
     });
 
     socket.on("signinSuccess", function(obj) {
-        $('')
+        $("#ip-user-name").val(obj.name);
+        $('#signin').hide();
+        $('#content').show();
     });
 
     socket.on("signupSuccess", function(obj) {
@@ -50,33 +52,53 @@ $(function() {
         showSignin();
     });
 
-    socket.on('onlineUser', (listUserName => {
-        console.log(listUserName);
+    socket.on('onlineUser', (listUser => {
+        console.log(listUser);
         $('.list-friends').html("");
-        listUserName.forEach((name) => {
-            var user = document.createElement("P");
-            user.innerHTML = name.name;
-            console.log('online: ' + name.id + name.name);
-            user.className = 'online-users';
-            user.addEventListener("click", () => {
-                if (findReadyRoomByIDFriend(name.id)) {
-                    $('#messages').empty();
-                    var convers = findReadyRoomByIDFriend(name.id);
-                    conver.messages.forEach((message) => {
-                        convertMessage(message.sender, message.data);
-                    });
-                    user.innerHTML = name.name;
-                } else {
-                    socket.emit('getConversation', name.id);
-                    console.log('getConversation is emitted: ' + name.id);
-                    socket.on('resConversation', (data) => {
-                        readyRooms.push({ idFriend: name.id, conversation: data });
-                    })
-                }
+        listUser.forEach((user) => {
+            var button = document.createElement("button");
+            button.innerHTML = user.name;
+            console.log('online: ' + user.id + user.name);
+            button.className = 'online-users';
+            button.addEventListener("click", () => {
+                    if (findReadyRoomByIDFriend(user.id)) {
+                        // $('.message-page').empty();
+                        // var convers = findReadyRoomByIDFriend(user.id);
+                        // convers.messages.forEach((message) => {
+                        //     convertMessage(message.sender, message.data);
+                        // });
+                        // button.innerHTML = user.name;
+                        selectChatPage(user);
+                    } else {
+                        socket.emit('getConversation', user.id);
+                        console.log('getConversation is emitted: ' + user.id);
+                        socket.on('resConversation', (data) => {
+                            readyRooms.push({ idFriend: user.id, conversation: data });
+                            selectChatPage(user);
+                        })
+                    }
             });
-            $('.list-friends').append(user);
+            $('.list-friends').append(button);
         });
     }));
+
+
+    var selectChatPage = (user) => {
+        $('#friend-name').val(user.name);
+        var allPages = document.getElementsByClassName('message-page');
+        for (i = 0; i < allPages.length; i++) {
+            allPages[i].style.display = "none";
+        }
+        if (document.getElementById(user.name)){
+            alert(user.name);
+        } else {
+            var page = $('<ul class="message-page" id="'+user.name+'"></ul>');
+            page.appendTo('.messages');
+            alert('append');
+        }
+        $('#'+user.name).display = "block";
+    }
+
     //chat event
     //***************************************************************************
     socket.on('roomOrder', (data) => {
@@ -121,8 +143,6 @@ $(function() {
             console.log('signin buttton clicked');
             if (checkEmptySignin() == null) {
                 action('signin');
-                $('#signin').hide();
-                $('#content').show();
             } else {
                 alert(checkEmptySignin());
             }
@@ -267,23 +287,22 @@ $(function() {
             }
         }
     }
+    
     var convertMessage = (who, data) => {
         const validImageTypes = ["image/gif", "image/jpeg", "image/png", "image/ico"];
         if (data.type === "text") {
-            $("#messages").append("<li  class=" + who + "> <p>" + data.object + " </p>" +
+            $(".message-page").append("<li  class=" + who + "> <p>" + data.object + " </p>" +
                 "</li>");
         } else if ($.inArray(data.type, validImageTypes) >= 0) {
             var result = "data:image/png;base64," + convertB64(data.object)
             var li = $("<li  class=" + who + "> <img src=" + result + " width='40%'/> </li>");
-            li.appendTo('#messages');
+            li.appendTo('.message-page');
         } else {
             var li = $("<li class=" + who + ">  </li>");
             var a = $("<a download='file.txt' href='data:application/octet-stream,'> downfile </a>");
             a.appendTo(li);
-            li.appendTo('#messages');
+            li.appendTo('.message-page');
         }
-        console.log(data.type);
-        console.log(who);
     }
 
     var sendMessage = () => {
@@ -306,12 +325,8 @@ $(function() {
         const sendTime = new Date().getHours();
         Array.from(file.target.files).forEach((item) => {
             const fileType = item.type;
-            socket.emit('send', {
-                username: username,
-                type: fileType,
-                sendTime: sendTime,
-                object: item
-            });
+            socket.emit('send', { username: username, type: fileType,
+                                    sendTime: sendTime, object: item });
         })
     }
 
