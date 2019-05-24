@@ -2,22 +2,38 @@
     align-items: center;
     width: 100%;
     top: 10%;
-    margin-top:5%;
+    height: 600px;
+    margin-top: 5%;
+}
+#callvideo div{
+    position: relative;
+}
+
+.autosize-video {
+    position: absolute;
+    object-fit: cover;
+}
+#close-video{
+    height: 50px;
+    width: 50px;
+    position: fixed;
+    top: 0;
+    left: 96%;
 }
 
 #my-video {
     background: #726b54;
     width: 25%;
     align-items: flex-end;
-    position: absolute;
     height: auto;
     right: 10%;
-    bottom: 13.5%;
+    bottom: -530px;
 }
 
-#friend-video{
+#friend-video {
     background: #53627a;
-    width: 80%;
-    height: 80%;
+    width: 80% !important;
+    height: 80% !important;
     margin-left: 10%;
+    margin-top: 10%;
 }

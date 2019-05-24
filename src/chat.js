@@ -3,13 +3,16 @@ const $ = require('jquery');
 const emoji = require('emojionearea');
 const host = require('./define').host;
 require('jquery-textcomplete');
-var socket = io.connect(host);
+var socket = io.connect(host, { transports: ['websocket'] });
 
 $(function() {
     //**************************************************************************
     //Define
     //**************************************************************************
     let roomName;
+    let readyRooms = [];
+
+
     let searchParams = new URLSearchParams(window.location.search)
     if (searchParams.has('name')) {
         $("#ip-user-name").val(searchParams.get('name'));
@@ -18,10 +21,6 @@ $(function() {
     }
 
     $("#message-input").emojioneArea({});
-    const constraints = window.constraints = {
-        audio: false,
-        video: true
-    };
 
     //**************************************************************************
     //Socket event
@@ -37,6 +36,7 @@ $(function() {
     });
 
     socket.on("signinSuccess", function(obj) {
+        $("#ip-user-name").val(obj.name);
         $('#signin').hide();
         $('#content').show();
     });
@@ -48,13 +48,44 @@ $(function() {
         showSignin();
     });
 
-    socket.on('onlineUser', (listUserName => {
-        console.log(listUserName);
+    socket.on('onlineUser', (listUser => {
+        console.log(listUser);
         $('.list-friends').html("");
-        listUserName.forEach((name) => {
-            $('.list-friends').append('<div class="friendName">' + name + '</div>');
+        listUser.forEach((user) => {
+            var button = document.createElement("button");
+            button.innerHTML = user.name;
+            if (user.name === $("#ip-user-name").val()) {
+                button.style.background = 'gray';
+                button.disable = true;
+            }
+            console.log('online: ' + user.id + user.name);
+            button.className = 'online-users';
+            button.addEventListener("click", () => {
+                selectChatPage(user);
+            });
+            $('.list-friends').append(button);
         });
     }));
+
+
+    var selectChatPage = (user) => {
+        var allPages = document.getElementsByClassName('message-page');
+        for (i = 0; i < allPages.length; i++) {
+            allPages[i].style.display = "none";
+        }
+        if (document.getElementById(user.name)) {
+            $('#friend-name').text(user.name);
+        } else {
+            socket.emit('getConversation', user.id);
+            console.log('getConversation is emitted: ' + user.id);
+            socket.on('resConversation', (data) => {
+                var page = $('<ul class="message-page" id="' + user.name + '"></ul>');
+                page.appendTo('.messages');
+                $('#friend-name').text(user.name);
+            });
+        }
+        $('#' + user.name).show();
+    }
 
     //chat event
     //***************************************************************************
@@ -72,6 +103,7 @@ $(function() {
                 $('#rooms-order').hide();
                 $('#content').show();
                 $('#friend-name').text(roomName);
+                selectChatPage({name: roomName});
             });
             $('#rooms').append(newRoom);
         })
@@ -94,9 +126,9 @@ $(function() {
 
     //signin/signup
     //**************************************************************************
-    var title = $('#h1-title');
+
     $('#btn-continue').on('click', () => {
-        if (title.text() === 'ĐĂNG NHẬP') {
+        if ($('#h1-title').text() === 'ĐĂNG NHẬP') {
             console.log('signin buttton clicked');
             if (checkEmptySignin() == null) {
                 action('signin');
@@ -165,7 +197,7 @@ $(function() {
         $('#change-background').show();
         $('#setting-menu').hide();
     });
-    
+
     //join room
     /*--------------------------------------------------*/
     $('#menu-join-room').on('click', () => {
@@ -196,6 +228,8 @@ $(function() {
             console.log(newName);
         }
     });
+
+
 
     //**************************************************************************
     //Hàm xử lý
@@ -238,20 +272,18 @@ $(function() {
     var convertMessage = (who, data) => {
         const validImageTypes = ["image/gif", "image/jpeg", "image/png", "image/ico"];
         if (data.type === "text") {
-            $("#messages").append("<li  class=" + who + "> <p>" + data.object + " </p>" +
+            $(".message-page").append("<li  class=" + who + "> <p>" + data.object + " </p>" +
                 "</li>");
         } else if ($.inArray(data.type, validImageTypes) >= 0) {
             var result = "data:image/png;base64," + convertB64(data.object)
             var li = $("<li  class=" + who + "> <img src=" + result + " width='40%'/> </li>");
-            li.appendTo('#messages');
+            li.appendTo('.message-page');
         } else {
             var li = $("<li class=" + who + ">  </li>");
             var a = $("<a download='file.txt' href='data:application/octet-stream,'> downfile </a>");
             a.appendTo(li);
-            li.appendTo('#messages');
+            li.appendTo('.message-page');
         }
-        console.log(data.type);
-        console.log(who);
     }
 
     var sendMessage = () => {
@@ -316,7 +348,7 @@ $(function() {
 });
 
 function openStream() {
-    const config = { audio: true, video: true };
+    const config = { audio: false, video: true };
     return navigator.mediaDevices.getUserMedia(config);
 }
 
@@ -329,38 +361,72 @@ function playStream(idVideoTag, stream) {
     }
 }
 
-socket.on('callVideo',()=>{
-    socket.emit('answerID',socket.peerID);
-});
-socket.on('answerID',(id)=>{
-    openStream()
-    .then( stream=>{
-        $('#callvideo').show();
-        $('#content').hide();
-        playStream('my-video',stream);
-        const call = peer.call(id,stream);
-        call.on('stream',remoteStream => playStream('friend-video',remoteStream));
-    });
-});
+var peer = new Peer({ key: 'lwjd5qra8257b9' });
 
-var peer = new Peer({key:'lwjd5qra8257b9'});
-
-peer.on('open',(id)=>{
+peer.on('open', (id) => {
     socket.peerID = id;
-    socket.emit("sendPeerID",id);
+    socket.emit("sendPeerID", id);
 });
 
 $('#call').on('click', () => {
     socket.emit('callVideo');
 });
 
-peer.on('call',call=>{
+socket.on('answerID', (id) => {
     openStream()
-    .then(stream=>{
-        call.answer(stream);
-        $('#callvideo').show();
-        $('#content').hide();
-        playStream('my-video',stream);
-        call.on('stream',remoteStream=>playStream('friend-video',remoteStream));
-    });
+        .then(stream => {
+            $('#callvideo').show();
+            $('#content').hide();
+            playStream('my-video', stream);
+            const call = peer.call(id, stream);
+            call.on('stream', remoteStream => playStream('friend-video', remoteStream));
+            $('#close-video').on('click', () => {
+                $('#friend-video').stop();
+                $('#my-video').stop();
+                $('#callvideo').hide();
+                $('#content').show();
+                call.close();
+                stream.getTracks().forEach((track) => { track.stop(); });
+            });
+            call.on("close",()=>{
+                $('#friend-video').stop();
+                $('#my-video').stop();
+                $('#callvideo').hide();
+                $('#content').show();
+                stream.getTracks().forEach((track) => { track.stop(); });
+            })
+        });
 });
+
+
+socket.on('callVideo', () => {
+    socket.emit('answerID', socket.peerID);
+});
+peer.on('call', call => {
+    openStream()
+        .then(stream => {
+            call.answer(stream);
+            $('#callvideo').show();
+            $('#content').hide();
+            playStream('my-video', stream);
+            call.on('stream', remoteStream => playStream('friend-video', remoteStream));
+            $('#close-video').on('click', () => {
+                $('#friend-video').stop();
+                $('#my-video').stop();
+                $('#callvideo').hide();
+                $('#content').show();
+                call.close();
+                stream.getTracks().forEach((track) => { track.stop(); });
+            });
+            call.on("close",()=>{
+                $('#friend-video').stop();
+                $('#my-video').stop();
+                $('#callvideo').hide();
+                $('#content').show();
+                stream.getTracks().forEach((track) => { track.stop(); });
+            })
+        });
+});
+
+
+

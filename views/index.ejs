@@ -12,13 +12,10 @@
     <script src="https://cdn.jsdelivr.net/npm/peerjs@0.3.20/dist/peer.min.js"></script>
     <script src="../js/socket.io.js"></script>
     <script src="../js/jquery.min.js"></script>
-    <!-- <script src="../js/chat.js"></script>
-    <script src="../js/login.js"></script> -->
-    <!-- <script src="../js/emojionearea.js"></script> -->
 </head>
 
 <body class="background">
-    <div id="signin">
+    <div id="signin" class="shadow">
         <button class="button green-button" id="btn-switch-login">Đăng ký</button>
         <img class="logo" src="../images/chat-logo.ico" title="logo" alt="logo">
         <div class="signin-title" id="signin-title">
@@ -48,9 +45,10 @@
         </script>
     </div>
     <div id="callvideo" style="display: none">
-        <div><video id="friend-video" > </video></div>
+        <button class="button green-button" id="close-video">X</button>
+        <div><video class="autosize-video" id="friend-video" > </video></div>
         
-        <div><video id="my-video" ></video></div>
+        <div><video class="autosize-video shadow" id="my-video" muted="muted"></video></div>
     </div>
     <div class="background content" id="change-background">
         <script type="text/javascript">
@@ -73,7 +71,6 @@
                 </ul>
             </div>
             <div class="messages">
-                <ul id="messages"></ul>
             </div>
             <div class="bottom-input">
                 <input class="input" id="message-input" type="text" name="input" placeholder="Nhập tin nhắn...">

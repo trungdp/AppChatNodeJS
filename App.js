@@ -15,49 +15,39 @@ app.use(express.static(path.join(__dirname, 'Client')));
 app.set("view engine", "ejs");
 app.set("views", "./views");
 
-let rooms = [{
-        name: "Phòng 1",
-        userCount: 0
-    },
-    {
-        name: "Phòng 2",
-        userCount: 0
-    },
-    {
-        name: "Phòng 3",
-        userCount: 0
-    }
+let rooms = [{ name: "Phòng 1", userCount: 0 },
+    { name: "Phòng 2", userCount: 0 },
+    { name: "Phòng 3", userCount: 0 }
 ];
 var usernameCount = 0;
 //Tạo socket 
-app.get("/", function (req, res) {
+app.get("/", function(req, res) {
     res.render("index");
 });
 
-io.on('connection', function (socket) {
-    console.log('socket '+socket.id + ' is connected');
+io.set('transports', ['websocket']);
 
-    socket.on('joinWith', function (name) {
-        socket.userName = name;
-        onlineUsers.push(name);
-        io.sockets.emit('onlineUser', onlineUsers);
-    });
+io.on('connection', function(socket) {
+    console.log('socket ' + socket.id + ' is connected');
 
-    socket.on('signin', function (data) {
-        mongodb.isValidateUser({ name: data.name, pass: data.pass }, function (result) {
+    socket.on('signin', function(data) {
+        mongodb.isValidateUser({ name: data.name, pass: data.pass }, function(result) {
             if (result) {
                 socket.emit("signinSuccess", result);
-                socket.userName = data.name;
-                onlineUsers.push(socket.userName);
-                io.sockets.emit('onlineUser', onlineUsers);
+                socket.userName = result.name;
+                socket.idUser = result._id.toString();
+                console.log("id: "+socket.idUser+" name: "+socket.userName);
+                mongodb.updateStatus(data.name, require('./src/define').userStatus.ONLINE, (res) => {
+                    sendOnlineUser();
+                })
             } else {
                 socket.emit('signinError', "Tên đăng nhập hoặc mật khẩu không đúng");
             }
         });
     });
 
-    socket.on('signup', function (data) {
-        mongodb.hadName(data.name, function (result) {
+    socket.on('signup', function(data) {
+        mongodb.hadName(data.name, function(result) {
             if (result) {
                 const errorMessage = "Tên người dùng đã tồn tại!";
                 socket.emit('signupError', errorMessage);
@@ -69,36 +59,32 @@ io.on('connection', function (socket) {
         });
     });
 
-    socket.on('disconnect', function () {
+    socket.on('disconnect', function() {
         if (socket.userName){
-            onlineUsers.splice(onlineUsers.indexOf(socket.userName),1);
+            mongodb.updateStatus(socket.userName, require('./src/define').userStatus.OFFLINE, (res) => {
+                sendOnlineUser();
+            })
         }
-        socket.broadcast.emit('onlineUser', onlineUsers);
     });
 
     //room handle---------------------------------------------
-    roomOrder(socket);
+    socket.on('getConversation', (data) => {
+        getConversation(socket.idUser, data, (res) => {
+            joinRoom(socket, res._id);
+            socket.emit('resConversation', res);
+            console.log('room: ' + res._id);
+        })
+    });
+
+    socket.emit('roomOrder', rooms);
+    socket.on('joinRoom', (data)=>{
+        joinRoom(socket, data);
+    })
     socket.on('sendPeerID', id => {
         socket.peerID = id
-        console.log("peerID "+socket.peerID);
+        console.log("peerID " + socket.peerID);
     });
-    socket.on('joinRoom', (data) => {
-        var roomName = data;
-        
-        socket.join("room-" + roomName);
-        console.log(socket.request.connection.remoteAddress + " joined to " + roomName);
-        socket.on('send', function (data) {
-            console.log(data.name + ": " + data.object);
-            io.sockets.in("room-" + roomName).emit('send', data);
-        });
 
-        socket.on('callVideo', function () {
-            socket.to('room-'+roomName).emit('callVideo');
-        });
-        socket.on('answerID', function (id) {
-            socket.to('room-'+roomName).emit('answerID',id);
-        });
-    });
     socket.on('leaveRoom', (data) => {
         socket.leave("room-" + data);
         console.log(socket.remoteAddress + " left " + data);
@@ -113,7 +99,42 @@ io.on('connection', function (socket) {
     });
 });
 
-var roomOrder = (socket) => {
-    socket.emit('roomOrder', rooms);
+var sendOnlineUser = () => {
+    mongodb.getAllOnlineUser((listUserName) => {
+        io.sockets.emit('onlineUser', listUserName);
+        console.log("list online user: " + listUserName);
+    });
 }
+var getConversation = (id, idTarget, callback) => {
+    mongodb.findRoom([id, idTarget], (res) => {
+        if (res) return callback(res);
+        return mongodb.createRoom(new Conversation([id, idTarget]), (res) => {
+            return callback(res);
+        });
+    });
+}
+var joinRoom = (socket, data) => {
+    var roomName = data;
+
+    socket.join("room-" + roomName);
+    console.log(socket.request.connection.remoteAddress + " joined to " + roomName);
+
+    socket.on('send', function(data) {
+        if (data.type === "text") {
+            console.log(data.username + ": " + data.object);
+        }
+        io.sockets.in("room-" + roomName).emit('send', data);
+    });
+
+    socket.on('callVideo', function() {
+        socket.to('room-' + roomName).emit('callVideo');
+    });
+    socket.on('answerID', function(id) {
+        socket.to('room-' + roomName).emit('answerID', id);
+    });
+}
+
+
+
+
 server.listen(process.env.PORT || 3000);
