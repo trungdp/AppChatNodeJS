@@ -62,7 +62,7 @@ module.exports = {
 			});
 		});
 	},
-	
+
 	isValidateUser:function(query,callback){
 		return MongoClient.connect(url,{ useNewUrlParser: true }, function(err, db) {
 			if (err) throw err;
@@ -71,6 +71,53 @@ module.exports = {
 				db.close();
 				return callback(result[0]) ;
 			});
+		});	
+	},
+	updateStatus:function(name,status,callback){
+		return MongoClient.connect(url,{ useNewUrlParser: true }, function(err, db) {
+			if (err) throw err;
+			db.db(dbName).collection("User").updateOne({name:name}, { $set: { status: status } }, function(err, res) {
+				if (err) throw err;
+				console.log("update stauts:"+ res.name+": "+res.status);
+				db.close();
+				return callback(res) ;
+			  });
+		});	
+	},
+	getAllOnlineUser:function(callback){
+		return MongoClient.connect(url,{ useNewUrlParser: true }, function(err, db) {
+			if (err) throw err;
+			var table = db.db(dbName).collection("User");
+			table.find({status:"onl"}).toArray(function(err,res){
+				if(err) throw err;
+				console.log(res);
+				var result = [];
+				res.forEach((item)=>{
+					result.push(item.name);
+				})
+				return callback(result);
+			});
+		});	
+	},
+	hadName:function(name,callback){
+		return MongoClient.connect(url,{ useNewUrlParser: true }, function(err, db) {
+			if (err) throw err;
+			db.db(dbName).collection("User").find({name:name}).toArray(function(err, result) {
+				if (err) throw err;
+				db.close();
+				return callback(result.length > 0) ;
+			});
+		});	
+	},
+	addUser:function(obj,callback){
+		return MongoClient.connect(url,{ useNewUrlParser: true }, function(err, db) {
+			if (err) throw err;
+			var table = db.db(dbName).collection("User");
+			table.insertOne(obj, function(err, res) {
+				if (err) throw err;
+				db.close();
+				return callback(res.ops[0]);
+			})
 		});	
 	},
 
@@ -94,6 +141,7 @@ module.exports = {
 			table.find().toArray(function(err,res){
 				if(err) throw err;
 				var result = [];
+				console.log(res);
 				for (var i = 0; i < res.length; i++) { 
 					if (res[i].usersID.includes(obj)){
 						result.push(res[i])

@@ -3,20 +3,21 @@ const $ = require('jquery');
 const emoji = require('emojionearea');
 const host = require('./define').host;
 require('jquery-textcomplete');
-
-
+var socket = io.connect(host);
 
 $(function() {
     //**************************************************************************
     //Define
     //**************************************************************************
-    var socket = io.connect(host);
     let roomName;
+    let searchParams = new URLSearchParams(window.location.search)
+    if (searchParams.has('name')) {
+        $("#ip-user-name").val(searchParams.get('name'));
+        $('#ip-user-name').toggle(50);
+        $('#rooms-order').hide();
+    }
 
-    
-    $("#message-input").emojioneArea({
-        // container: "#message-input",       
-    });
+    $("#message-input").emojioneArea({});
     const constraints = window.constraints = {
         audio: false,
         video: true
@@ -25,6 +26,37 @@ $(function() {
     //**************************************************************************
     //Socket event
     //**************************************************************************
+    //signin/signip event
+    //**************************************************************************
+    socket.on("signinError", function(errorMessage) {
+        alert(errorMessage);
+    });
+
+    socket.on("signupError", function(errorMessage) {
+        alert(errorMessage);
+    });
+
+    socket.on("signinSuccess", function(obj) {
+        
+    });
+
+    socket.on("signupSuccess", function(obj) {
+        alert('Đăng ký thành công!');
+        $('#password').val("");
+        $('#user-name').val("");
+        showSignin();
+    });
+
+    socket.on('onlineUser', (listUserName => {
+        console.log(listUserName);
+        $('.list-friends').html("");
+        listUserName.forEach((name) => {
+            $('.list-friends').append('<div class="friendName">' + name + '</div>');
+        });
+    }));
+
+    //chat event
+    //***************************************************************************
     socket.on('roomOrder', (data) => {
         $('#rooms').empty();
         data.map((room) => {
@@ -37,6 +69,7 @@ $(function() {
                 roomName = room.name;
                 socket.emit('joinRoom', roomName);
                 $('#rooms-order').hide();
+                $('#content').show();
                 $('#friend-name').text(roomName);
             });
             $('#rooms').append(newRoom);
@@ -57,6 +90,34 @@ $(function() {
     //**************************************************************************
     //UI Event
     //**************************************************************************
+
+    //signin/signup
+    //**************************************************************************
+    var title = $('#h1-title');
+    $('#btn-continue').on('click', () => {
+        if (title.text() === 'ĐĂNG NHẬP') {
+            console.log('signin buttton clicked');
+            if (checkEmptySignin() == null) {
+                action('signin');
+                $('#signin').hide();
+                $('#content').show();
+            } else {
+                alert(checkEmptySignin());
+            }
+        } else {
+            console.log('signup buttton clicked');
+            if (checkEmptySignup() == null) {
+                action('signup');
+                $('#signin').hide();
+                $('#content').show();
+            } else {
+                alert(checkEmptySignup());
+            }
+        }
+    });
+
+    //chat
+    //*************************************************************************
     $("#btn-send").on('click', function() {
         sendMessage();
         $('.emojionearea-editor').empty();
@@ -86,7 +147,7 @@ $(function() {
 
     //hien lai form dang nhap neu bo qua
     $('#menu-signin').on('click', () => {
-        location.assign( host + 'index');
+        location.assign(host + 'index');
     });
 
     //mac dinh an menu va input doi biet hieu
@@ -107,10 +168,7 @@ $(function() {
         $('#change-background').show();
         $('#setting-menu').hide();
     });
-    $('#call').on('click', () => {
-        alert('call');
-        $('#setting-menu').hide();
-    });
+    
     //join room
     /*--------------------------------------------------*/
     $('#menu-join-room').on('click', () => {
@@ -125,10 +183,6 @@ $(function() {
         if (keyCode == '13') {
             //doi biet hieu
         }
-    });
-
-    $('input[type="file"]').change(function(file) {
-        sendFile(file);
     });
 
     $('#btn-add-room').on('click', () => {
@@ -149,6 +203,41 @@ $(function() {
     //**************************************************************************
     //Hàm xử lý
     //**************************************************************************
+    var checkEmptySignin = () => {
+        var name = $('#user-name').val();
+        var pass = $('#password').val();
+        if (name.trim() === "" || name == null) {
+            return "Tên không được để trống";
+        } else if (pass.trim() === "" || pass == null) {
+            return "Mật khẩu không được để trống";
+        } else {
+            return null;
+        }
+    }
+
+    var checkEmptySignup = () => {
+        var name = $('#user-name').val();
+        var pass = $('#password').val();
+        var confirm = $('#password-confirm').val();
+        if (name.trim() === "" || name == null) {
+            return "Tên không được để trống";
+        } else if (pass.trim() === "" || pass == null) {
+            return "Mật khẩu không được để trống";
+        } else if (confirm.trim() === "" || confirm == null) {
+            return "Xác nhận mật khẩu không được để trống";
+        } else if (pass != confirm) {
+            return "Xác nhận mật khẩu không trùng khớp";
+        } else {
+            return null;
+        }
+    }
+
+    var action = (action) => {
+        var name = $('#user-name').val();
+        var pass = $('#password').val();
+        socket.emit(action, { name: name, pass: pass });
+    }
+
     var convertMessage = (who, data) => {
         const validImageTypes = ["image/gif", "image/jpeg", "image/png", "image/ico"];
         if (data.type === "text") {
@@ -195,7 +284,6 @@ $(function() {
                 object: item
             });
         })
-
     }
 
     function convertB64(data) {
@@ -228,46 +316,51 @@ $(function() {
     var setBackground = (source) => {
         $(".background").css("background-image", "url(" + source + ")");
     }
+});
 
-    function handleError(error) {
-        if (error.name === 'ConstraintNotSatisfiedError') {
-            let v = constraints.video;
-            errorMsg(`The resolution ${v.width.exact}x${v.height.exact} px is not supported by your device.`);
-        } else if (error.name === 'PermissionDeniedError') {
-            errorMsg('Permissions have not been granted to use your camera and ' +
-                'microphone, you need to allow the page access to your devices in ' +
-                'order for the demo to work.');
-        }
-        errorMsg(`getUserMedia error: ${error.name}`, error);
-    }
+function openStream() {
+    const config = { audio: true, video: true };
+    return navigator.mediaDevices.getUserMedia(config);
+}
 
-    function errorMsg(msg, error) {
-        const errorElement = document.querySelector('#errorMsg');
-        errorElement.innerHTML += "<p>${msg}</p>";
-        if (typeof error !== 'undefined') {
-            console.log(error);
-        }
-    }
+function playStream(idVideoTag, stream) {
+    const video = document.getElementById(idVideoTag);
+    video.srcObject = stream;
+    video.play();
+}
 
-    function init(e) {
-        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+socket.on('callVideo',()=>{
+    socket.emit('answerID',socket.peerID);
+});
+socket.on('answerID',(id)=>{
+    openStream()
+    .then( stream=>{
+        $('#callvideo').show();
+        $('#content').hide();
+        playStream('my-video',stream);
+        const call = peer.call(id,stream);
+        call.on('stream',remoteStream => playStream('friend-video',remoteStream));
+    });
+});
 
-        if (navigator.getUserMedia) {
-            navigator.getUserMedia({ audio: true, video: { width: 1280, height: 720 } },
-                function(stream) {
-                    var video = document.querySelector('video');
-                    video.srcObject = stream;
-                    window.stream = stream;
-                    video.onloadedmetadata = function(e) {
-                        video.play();
-                    };
-                },
-                function(err) {
-                    console.log("The following error occurred: " + err.name);
-                }
-            );
-        } else {
-            console.log("getUserMedia not supported");
-        }
-    }
+var peer = new Peer({key:'lwjd5qra8257b9'});
+
+peer.on('open',(id)=>{
+    socket.peerID = id;
+    socket.emit("sendPeerID",id);
+});
+
+$('#call').on('click', () => {
+    socket.emit('callVideo');
+});
+
+peer.on('call',call=>{
+    openStream()
+    .then(stream=>{
+        call.answer(stream);
+        $('#callvideo').show();
+        $('#content').hide();
+        playStream('my-video',stream);
+        call.on('stream',remoteStream=>playStream('friend-video',remoteStream));
+    });
 });
