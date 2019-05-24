@@ -324,6 +324,9 @@ function playStream(idVideoTag, stream) {
     const video = document.getElementById(idVideoTag);
     video.srcObject = stream;
     video.play();
+    if(idVideoTag === 'my-video'){
+        video.volume = 0;
+    }
 }
 
 socket.on('callVideo',()=>{
