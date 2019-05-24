@@ -37,7 +37,8 @@ $(function() {
     });
 
     socket.on("signinSuccess", function(obj) {
-        
+        $('#signin').hide();
+        $('#content').show();
     });
 
     socket.on("signupSuccess", function(obj) {
@@ -99,8 +100,6 @@ $(function() {
             console.log('signin buttton clicked');
             if (checkEmptySignin() == null) {
                 action('signin');
-                $('#signin').hide();
-                $('#content').show();
             } else {
                 alert(checkEmptySignin());
             }
@@ -108,8 +107,6 @@ $(function() {
             console.log('signup buttton clicked');
             if (checkEmptySignup() == null) {
                 action('signup');
-                $('#signin').hide();
-                $('#content').show();
             } else {
                 alert(checkEmptySignup());
             }
