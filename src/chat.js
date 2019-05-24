@@ -21,10 +21,6 @@ $(function() {
     }
 
     $("#message-input").emojioneArea({});
-    const constraints = window.constraints = {
-        audio: false,
-        video: true
-    };
 
     //**************************************************************************
     //Socket event
@@ -107,6 +103,7 @@ $(function() {
                 $('#rooms-order').hide();
                 $('#content').show();
                 $('#friend-name').text(roomName);
+                selectChatPage({name: roomName});
             });
             $('#rooms').append(newRoom);
         })
@@ -274,14 +271,6 @@ $(function() {
         socket.emit(action, { name: name, pass: pass });
     }
 
-    var findReadyRoomByIDFriend = (idFriend) => {
-        for (i = 0; i < readyRooms.length; i++) {
-            if (readyRooms[i].idFriend == idFriend) {
-                return readyRooms[i].conversation;
-            }
-        }
-    }
-
     var convertMessage = (who, data) => {
         const validImageTypes = ["image/gif", "image/jpeg", "image/png", "image/ico"];
         if (data.type === "text") {
@@ -371,9 +360,17 @@ function playStream(idVideoTag, stream) {
     video.play();
 }
 
-socket.on('callVideo', () => {
-    socket.emit('answerID', socket.peerID);
+var peer = new Peer({ key: 'lwjd5qra8257b9' });
+
+peer.on('open', (id) => {
+    socket.peerID = id;
+    socket.emit("sendPeerID", id);
 });
+
+$('#call').on('click', () => {
+    socket.emit('callVideo');
+});
+
 socket.on('answerID', (id) => {
     openStream()
         .then(stream => {
@@ -387,22 +384,23 @@ socket.on('answerID', (id) => {
                 $('#my-video').stop();
                 $('#callvideo').hide();
                 $('#content').show();
-                call.emit('disconnect');
+                call.close();
+                stream.getTracks().forEach((track) => { track.stop(); });
             });
+            call.on("close",()=>{
+                $('#friend-video').stop();
+                $('#my-video').stop();
+                $('#callvideo').hide();
+                $('#content').show();
+                stream.getTracks().forEach((track) => { track.stop(); });
+            })
         });
 });
 
-var peer = new Peer({ key: 'lwjd5qra8257b9' });
 
-peer.on('open', (id) => {
-    socket.peerID = id;
-    socket.emit("sendPeerID", id);
+socket.on('callVideo', () => {
+    socket.emit('answerID', socket.peerID);
 });
-
-$('#call').on('click', () => {
-    socket.emit('callVideo');
-});
-
 peer.on('call', call => {
     openStream()
         .then(stream => {
@@ -416,7 +414,18 @@ peer.on('call', call => {
                 $('#my-video').stop();
                 $('#callvideo').hide();
                 $('#content').show();
-                call.emit('disconnect');
+                call.close();
+                stream.getTracks().forEach((track) => { track.stop(); });
             });
+            call.on("close",()=>{
+                $('#friend-video').stop();
+                $('#my-video').stop();
+                $('#callvideo').hide();
+                $('#content').show();
+                stream.getTracks().forEach((track) => { track.stop(); });
+            })
         });
 });
+
+
+

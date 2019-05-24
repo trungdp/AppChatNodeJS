@@ -120,7 +120,9 @@ var joinRoom = (socket, data) => {
     console.log(socket.request.connection.remoteAddress + " joined to " + roomName);
 
     socket.on('send', function(data) {
-        console.log(data.username + ": " + data.object);
+        if (data.type === "text") {
+            console.log(data.username + ": " + data.object);
+        }
         io.sockets.in("room-" + roomName).emit('send', data);
     });
 
