@@ -182,7 +182,8 @@ $(function() {
 
     //hien lai form dang nhap neu bo qua
     $('#menu-signin').on('click', () => {
-        location.assign(host + 'index');
+        $('#signin').show();
+        $('#content').hide();
     });
 
     //mac dinh an menu va input doi biet hieu
