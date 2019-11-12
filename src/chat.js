@@ -41,6 +41,12 @@ $(function() {
         $('#content').show();
     });
 
+    socket.on("signoutSuccess", function() {
+        $("#ip-user-name").val("");
+        $('#signin').show();
+        $('#content').hide();
+    });
+
     socket.on("signupSuccess", function(obj) {
         alert('Đăng ký thành công!');
         $('#password').val("");
@@ -145,8 +151,6 @@ $(function() {
             console.log('signup buttton clicked');
             if (checkEmptySignup() == null) {
                 action('signup');
-                $('#signin').hide();
-                $('#content').show();
             } else {
                 alert(checkEmptySignup());
             }
@@ -184,7 +188,12 @@ $(function() {
 
     //hien lai form dang nhap neu bo qua
     $('#menu-signin').on('click', () => {
-        location.assign(host + 'index');
+        $('#signin').show();
+        $('#content').hide();
+    });
+
+    $('#menu-signout').on('click', () => {
+        socket.emit("signout");
     });
 
     //mac dinh an menu va input doi biet hieu
@@ -364,6 +373,9 @@ function playStream(idVideoTag, stream) {
     const video = document.getElementById(idVideoTag);
     video.srcObject = stream;
     video.play();
+    if(idVideoTag === 'my-video'){
+        video.volume = 0;
+    }
 }
 
 var peer = new Peer({ key: 'lwjd5qra8257b9' });
