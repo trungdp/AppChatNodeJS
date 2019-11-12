@@ -69,7 +69,7 @@ $(function() {
 
 
     var selectChatPage = (user) => {
-        if(!(user.id)){
+        if(!(user.id) && !($('#'+user.name ))){
             var page = $('<ul class="message-page" id="' + user.name + '"></ul>');
             page.appendTo('.messages');
             $('#friend-name').text(user.name);
