@@ -41,6 +41,12 @@ $(function() {
         $('#content').show();
     });
 
+    socket.on("signoutSuccess", function() {
+        $("#ip-user-name").val("");
+        $('#signin').show();
+        $('#content').hide();
+    });
+
     socket.on("signupSuccess", function(obj) {
         alert('Đăng ký thành công!');
         $('#password').val("");
@@ -184,6 +190,10 @@ $(function() {
     $('#menu-signin').on('click', () => {
         $('#signin').show();
         $('#content').hide();
+    });
+
+    $('#menu-signout').on('click', () => {
+        socket.emit("signout");
     });
 
     //mac dinh an menu va input doi biet hieu

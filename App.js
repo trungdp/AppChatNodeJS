@@ -30,6 +30,15 @@ io.set('transports', ['websocket']);
 io.on('connection', function(socket) {
     console.log('socket ' + socket.id + ' is connected');
 
+    socket.on('signout', function() {
+        if (socket.userName){
+            mongodb.updateStatus(socket.userName, require('./src/define').userStatus.OFFLINE, (res) => {
+                socket.broadcast.emit("signoutSuccess");
+                sendOnlineUser();
+            })
+        }
+    });
+
     socket.on('signin', function(data) {
         mongodb.isValidateUser({ name: data.name, pass: data.pass }, function(result) {
             if (result) {
